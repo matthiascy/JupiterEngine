@@ -6,16 +6,16 @@
  *       \ /-\ \-/               /\ \    /\ \
  *          \ \ \  __   __  _____\/_/   _\_\ \__  ____  ____
  *           \ \ \/\ \  \ \/\  __/\/\`\/\___  __\/`__'\/\  __\
- *            \ \ \ \ \  \ \ \ \_\ \ \ \/__/\ \ \_/\  __/\ \_/
+ *            \ \ \ \ \  \ \ \ \_\ \ \ \/___/\ \_/\  __/ \ \_/
  *         /_\ \ \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
  *         \__\_\/_/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
  *                            \ \_\
  *                             \/_/
  *      @file:      game_logic.h
  *      @author:    ChenYang :)
- *      @date:      2014/11/24 17:06
- *      @brief:     A demo shows how to use Jupiter to make a simple Windows
- *                  game. Have fun! :-)
+ *      @date:      2014/11/24 20:06
+ *      @brief:     A demo test JupiterSprite.
+ *                  Have fun! :-)
  */
 
 #ifndef __GAME_LOGIC_H__

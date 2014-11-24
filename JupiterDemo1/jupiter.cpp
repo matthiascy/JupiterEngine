@@ -20,9 +20,9 @@
  */
 
 #include "jupiter.h"
-#include "winuser.h"
-#include "mmsystem.h"
-#include "wingdi.h"
+#include <winuser.h>
+#include <mmsystem.h>
+#include <wingdi.h>
 
 Jupiter* Jupiter::ptrJupiter = NULL;
 

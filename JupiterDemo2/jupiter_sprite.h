@@ -14,9 +14,8 @@
  *      @file:      jupiter_sprite.h
  *      @author:    ChenYang :)
  *      @date:      2014/11/24 18:13
- *      @brief:     This is a Sprite class, you need to add double buffer
- *                  support to your game. Cool! I can't wait to use it. 
- *                  Have fun! :-)
+ *      @brief:     This is a Sprite class, cool! I can't wait to use
+ *                  it. Have fun! :-)
  */
 
 #ifndef __JUPITER_SPRITE_H__
@@ -48,7 +47,7 @@ public:
         if (spriteBmp != NULL)
             release();
         spriteBmp = hbm;
-    };
+    }
 
     int getHeight() { return spriteHeight; };
     int getWidth() { return spriteWidth; };
