@@ -111,11 +111,8 @@ void JupiterSpriteManage::draw(HDC hDC)
     }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/*设置精灵的Z顺序*/
 void JupiterSpriteManage::setZOrder(JupiterSprite * pSprite,int nZorder)
 {
-    delSprite(pSprite);			//删除精灵
-    addSprite(pSprite,nZorder);	//重新添加精灵
+    delSprite(pSprite);
+    addSprite(pSprite,nZorder);
 }
