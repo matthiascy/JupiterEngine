@@ -134,7 +134,7 @@ bool initScene1(HWND hWnd)
     kPhyEnemy[3]=new JupiterPhysics();
 
 
-    //设置飞机物理对象
+    // Bound plane with physics object.
     RECT rObject={200,400,300,500};
     RECT rBound={0,0,kAmbiousPtr->getWidth(),kAmbiousPtr->getHeight()};
     POINTF ptFocus={0,0};
