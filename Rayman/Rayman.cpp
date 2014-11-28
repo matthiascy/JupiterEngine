@@ -137,10 +137,10 @@ bool initScene1(HWND hWnd)
     // Bound plane with physics object.
     RECT rObject={200,400,300,500};
     RECT rBound={0,0,kAmbiousPtr->getWidth(),kAmbiousPtr->getHeight()};
-    POINTF ptFocus={0,0};
-    POINTF ptVelo={0,5};
-    POINTF ptAccelerate={0,0};
-    POINTF ptDes={300,300};
+    Point ptFocus={0,0};
+    Point ptVelo={0,5};
+    Point ptAccelerate={0,0};
+    Point ptDes={300,300};
     kPhyFight=new JupiterPhysics(rObject,rBound,ptFocus,ptVelo,ptAccelerate,ptDes,false);
 
 
@@ -152,10 +152,10 @@ bool initScene1(HWND hWnd)
     kSprShot=new JupiterSprite("res\\Shot.png");
     RECT rObjectShot={0,0,20,100};
     RECT rBoundShot={0,-100,400,600};
-    POINTF ptFocusShot={10,0};
-    POINTF ptVeloShot={0,10};
-    POINTF ptAccelerateShot={0,0};
-    POINTF ptDesShot={0,0};
+    Point ptFocusShot={10,0};
+    Point ptVeloShot={0,10};
+    Point ptAccelerateShot={0,0};
+    Point ptDesShot={0,0};
     kPhyShot=new JupiterPhysics(rObjectShot,rBoundShot,ptFocusShot,ptVeloShot,ptAccelerateShot,ptDesShot,false);
 
     kPhyShot->setVisible(false);
@@ -189,7 +189,7 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
     // horizontal position.
     int x=rand()%(kAmbiousPtr->getWidth() - spr->getWidth());
     // Path.
-    POINTF ptPath[8] = {
+    Point ptPath[8] = {
         {x+100, -spr->getHeight()},
         {x+100, 100},
         {x+200, 100},
@@ -205,10 +205,10 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
         RECT rObject = {x, -spr->getHeight(), x+spr->getWidth(),0};
         RECT rBound = {0, -spr->getHeight(), kAmbiousPtr->getWidth(), 
             kAmbiousPtr->getHeight() + spr->getHeight()};
-        POINTF ptFocus = {0, 0};
-        POINTF ptVelo = {0, rand()%9+1};
-        POINTF ptAccelerate = {0, 0};
-        POINTF ptDes = {x, kAmbiousPtr->getHeight()};
+        Point ptFocus = {0, 0};
+        Point ptVelo = {0, rand()%9+1};
+        Point ptAccelerate = {0, 0};
+        Point ptDes = {x, kAmbiousPtr->getHeight()};
         phy->setObject(rObject, rBound, ptFocus, ptVelo, ptAccelerate, ptDes, true);
     }
 
@@ -432,9 +432,9 @@ void keyEvent(HWND hWnd)
     }
 
 
-    if(GetAsyncKeyState('S')<0 ) {// S pressed? if no bullet in scene, beam bullet.
+    if (GetAsyncKeyState('S') < 0) {// S pressed? if no bullet in scene, beam bullet.
         if(!kPhyShot->getMoveState() && kSprThor->getVisible()) {
-            POINTF pt={(kPhyFight->getPos().x+kPhyFight->getWidth()/2), (kPhyFight->getPos().y)};
+            Point pt={(kPhyFight->getPos().x+kPhyFight->getWidth()/2), (kPhyFight->getPos().y)};
             kPhyShot->setPos(pt);
             kPhyShot->setDes(pt.x,-100);
             kPhyShot->setMoveState(true);

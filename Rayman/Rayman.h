@@ -34,7 +34,7 @@ JupiterSprite* kSprCloud[8];		// Cloud image.
 JupiterSprite* kSprThor;		// Used to draw plane image.
 JupiterSprite* kSprThorPic[3];	        // Store plane images.
 
-POINTF kCloudPt[8];			// Clouds left-top position.
+Point kCloudPt[8];			// Clouds left-top position.
 
 JupiterSpriteManage kSprManage;		// SpriteManage object.
 
