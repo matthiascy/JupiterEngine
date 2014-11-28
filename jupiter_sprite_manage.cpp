@@ -111,8 +111,8 @@ void JupiterSpriteManage::draw(HDC hDC)
     }
 }
 
-void JupiterSpriteManage::setZOrder(JupiterSprite* pSprite,int nZorder)
+void JupiterSpriteManage::setZOrder(JupiterSprite* pSprite, int nZorder)
 {
     delSprite(pSprite);
-    addSprite(pSprite,nZorder);
+    addSprite(pSprite, nZorder);
 }
