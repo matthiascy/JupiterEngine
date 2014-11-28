@@ -7,8 +7,8 @@
  *          \ \ \  __   __  _____\/_/   _\_\ \__  ____  ____
  *           \ \ \/\ \  \ \/\  __/\/\`\/\___  __\/`__'\/\  __\
  *            \ \ \ \ \  \ \ \ \_\ \ \ \/___/\ \_/\  __/ \ \_/
- *         /_\ \ \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
- *         \__\_\/_/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
+ *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
+ *         \/______/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
  *                            \ \_\
  *                             \/_/
  *      @file:      jupiter_sprite_manage.cpp
@@ -111,11 +111,8 @@ void JupiterSpriteManage::draw(HDC hDC)
     }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/*设置精灵的Z顺序*/
-void JupiterSpriteManage::setZOrder(JupiterSprite * pSprite,int nZorder)
+void JupiterSpriteManage::setZOrder(JupiterSprite* pSprite,int nZorder)
 {
-    delSprite(pSprite);			//删除精灵
-    addSprite(pSprite,nZorder);	//重新添加精灵
+    delSprite(pSprite);
+    addSprite(pSprite,nZorder);
 }
