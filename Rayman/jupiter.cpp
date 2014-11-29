@@ -157,7 +157,7 @@ int WINAPI WinMain(HINSTANCE hInstance,	HINSTANCE hPrevInstance,
                 long nTick = timeGetTime();
                 long nNextTick = Jupiter::getJupiter()->getNextGameTick();
 
-                if(nTick>nNextTick) {
+                if(nTick > nNextTick) {
                     long nNextGameTick = nTick + Jupiter::getJupiter()->getFrameDelay();
                     Jupiter::getJupiter()->setNextGameTick(nNextGameTick);
 
@@ -172,7 +172,7 @@ int WINAPI WinMain(HINSTANCE hInstance,	HINSTANCE hPrevInstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {	
-    switch(message) {
+    switch (message) {
         case WM_CREATE:	
             Jupiter::getJupiter()->setWindow(hWnd);
             gameStart(hWnd);
@@ -230,7 +230,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_CLOSE:
-            if(gameWindowClose(hWnd))
+            if (gameWindowClose(hWnd))
                 DestroyWindow(hWnd);
             break;
 
@@ -240,7 +240,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
 
         default:
-            return DefWindowProc(hWnd,message,wParam,lParam);
+            return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return false;
 }

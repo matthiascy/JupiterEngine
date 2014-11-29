@@ -13,7 +13,8 @@
  *                             \/_/
  *      @file:      Rayman.h
  *      @author:    ChenYang :)
- *      @date:      2014/11/24 21:00
+ *      @date:      2014/11/29 10:30
+ *      @history:   2014/11/24 21:00
  *      @brief:     Exciting moment, the final game. Hope you enjoy it! :-)
  */
 
@@ -56,12 +57,11 @@ JupiterPhysics* kPhyEnemy[4];	// Enemy plane physical actions.
 void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType);
 
 // Used to make blast effect.
-class JupiterBlast
-{
+class JupiterBlast {
 protected:
 	long jupiBlastEndTime;	// End time.
+        bool jupiBlastFree;		// Free?
 	JupiterSprite* jupiBlastSprite;	// Blast animation.
-	bool	jupiBlastFree;		// Free?
 
 public:
 	JupiterBlast()	
@@ -86,7 +86,7 @@ public:
 
 	bool play()	// Play animation.
 	{
-            if(!jupiBlastFree && jupiBlastEndTime <= timeGetTime()) {
+            if(!jupiBlastFree && (jupiBlastEndTime <= timeGetTime())) {
 			jupiBlastSprite->setVisible(false);
 			jupiBlastSprite = NULL;
 			jupiBlastEndTime = 0;
@@ -97,8 +97,7 @@ public:
 	    }
 	}
 
-	bool IsFree()		// Animation is free?
-	{ return jupiBlastFree; }
+	bool isFree() { return jupiBlastFree; }    // Animation is free?
 };
 
 JupiterBlast kJupiterBlast;			// Blast animation object.

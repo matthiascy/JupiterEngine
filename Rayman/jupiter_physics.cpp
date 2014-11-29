@@ -181,7 +181,7 @@ void JupiterPhysics::setVelo(Point ptVelo)
     jupiPhyPtVelo = ptVelo;
     jupiPhyStep = (float)hypot(ptVelo.x, ptVelo.y);
 
-    if (fabs(jupiPhyPtVelo.x)<0.001 && fabs(jupiPhyPtVelo.y)<0.001)
+    if ((fabs(jupiPhyPtVelo.x)) < 0.001 && (fabs(jupiPhyPtVelo.y) < 0.001))
         jupiPhyDirect = DI_STOP;
     else if ((jupiPhyPtVelo.x + jupiPhyPtVelo.y) > 0) {
         if (jupiPhyPtVelo.x >= jupiPhyPtVelo.y)
@@ -240,8 +240,7 @@ void JupiterPhysics::setObject(RECT rObject, RECT rBound, Point ptFocus,
 
 bool JupiterPhysics::isPointInBound(Point pt, RECT r)
 {
-    if (pt.x>=r.left && pt.x<=r.right
-        && pt.y>=r.top && pt.y<=r.bottom)
+    if ((pt.x>=r.left) && (pt.x<=r.right) && (pt.y>=r.top) && (pt.y<=r.bottom))
         return true;
     else
         return false;
@@ -282,26 +281,30 @@ void JupiterPhysics::moveToDes()
     if (!getMoveState())
         return ;
 
+    // Calculate vertical and horizontal distance between origin and destination.
     float sx = jupiPhyPtDes.x - jupiPhyPtPos.x;
     float sy = jupiPhyPtDes.y - jupiPhyPtPos.y;
 
-    if (hypot(sx,sy)<jupiPhyStep) {
+    // Calculate linear distance, if it's shorter than move step, directly move
+    // to destination.
+    if (hypot(sx, sy) < jupiPhyStep) {
         setPos(jupiPhyPtDes);
         setMoveState(false);
         return ;
     }
+    
+    float x = (float)(jupiPhyStep*sx / sqrt(sx*sx + sy*sy));
+    float y = (float)(jupiPhyStep*sy / sqrt(sx*sx + sy*sy));
 
-    float x = (float)(jupiPhyStep*sx / sqrt(sx*sx+sy*sy));
-    float y = (float)(jupiPhyStep*sy / sqrt(sx*sx+sy*sy));
-
-    Point pt={x,y};
+    Point pt = { x, y };
     setVelo(pt);
-
-    Point pt1 = {jupiPhyPtPos.x+x, jupiPhyPtPos.y+y};
+    
+    // Next position to move to.
+    Point pt1 = { jupiPhyPtPos.x + x, jupiPhyPtPos.y + y };
     setPos(pt1);
 }
 
-void JupiterPhysics::moveAlongPath(Point * ptDesPath, int nPtCount,
+void JupiterPhysics::moveAlongPath(Point* ptDesPath, int nPtCount,
                                    bool bCycle/* = false*/)
 {
     if (!jupiPhyInitIndex) {
@@ -360,13 +363,13 @@ void JupiterPhysics::moveDirect(DIRECTION Direct)
 
 void JupiterPhysics::uniformMove2(BOUNDACTION action)
 {
-    if (! getMoveState())
+    if (!getMoveState())
         return;
 
     Point pt;				
-    pt=jupiPhyPtPos+jupiPhyPtVelo;
+    pt = jupiPhyPtPos + jupiPhyPtVelo;  // Position after move.
 
-    if (isPointInBound(pt,jupiPhyRectFocusBound)) {
+    if (isPointInBound(pt, jupiPhyRectFocusBound)) {
         setPos(pt);
         return;
     }
@@ -389,11 +392,10 @@ void JupiterPhysics::uniformMove2(BOUNDACTION action)
             setPos(pt);
             break;
 
-
         case BA_REBOUND:
-            if (pt.x>=jupiPhyRectFocusBound.right || pt.x<=jupiPhyRectFocusBound.left)
+            if (pt.x >= jupiPhyRectFocusBound.right || pt.x <= jupiPhyRectFocusBound.left)
                 jupiPhyPtVelo.x =- jupiPhyPtVelo.x;
-            else if (pt.y>=jupiPhyRectFocusBound.bottom || pt.y<=jupiPhyRectFocusBound.top)
+            else if (pt.y >= jupiPhyRectFocusBound.bottom || pt.y <= jupiPhyRectFocusBound.top)
                 jupiPhyPtVelo.y =- jupiPhyPtVelo.y;
             setVelo(jupiPhyPtVelo);
             break;
@@ -407,24 +409,27 @@ void JupiterPhysics::uniformMove2(BOUNDACTION action)
 bool JupiterPhysics::collision(JupiterPhysics* ph, BOUNDACTION action,
                                RECT * prcollision)
 {
-    if (!(getVisible()&&ph->getVisible()))
+    if (!(getVisible() && ph->getVisible()))
         return false;
 
+    // Collide or not
     if (IntersectRect(prcollision, &getCheckBox(), &(ph->getCheckBox()))) {
         Point pt1, pt2;
 
-        switch(action) {
-            case BA_STOP:
+        switch (action) {
+            case BA_STOP:   // Stop move.
                 setMoveState(false);
                 ph->setMoveState(false);
                 break;
 
-            case BA_CLEAR:
+            case BA_CLEAR:  // Clear object.
+                // Set invisibility to false.
                 setVisible(false);
                 ph->setVisible(false);
                 break;
 
-            case BA_REBOUND:
+            case BA_REBOUND:    // Bounce.
+                // Modify speed.
                 if (getVelo().x * ph->getVelo().x>=0) {
                     pt1.x = getVelo().x;
                     pt2.x = ph->getVelo().x;
@@ -446,7 +451,6 @@ bool JupiterPhysics::collision(JupiterPhysics* ph, BOUNDACTION action,
                     pt2 = getVelo();
                     pt1 = ph->getVelo();
                 }
-
                 setVelo(pt1);
                 ph->setVelo(pt2);
                 break;
@@ -459,8 +463,10 @@ bool JupiterPhysics::collision(JupiterPhysics* ph, BOUNDACTION action,
 
 bool JupiterPhysics::checkErr(bool bRectify)
 {	
+    // In bounding box?
     if (isPointInBound(jupiPhyPtPos, jupiPhyRectFocusBound))
         return false;
+    // Rectify or not.
     if (bRectify) {
         Point pt = jupiPhyPtPos;
 
@@ -474,7 +480,7 @@ bool JupiterPhysics::checkErr(bool bRectify)
         else if (jupiPhyRectFocusBound.bottom < jupiPhyPtPos.y)
             pt.y = (float)jupiPhyRectFocusBound.bottom;
 
-        setPos(pt);
+        setPos(pt); // Set position after rectification.
         setMoveState(false);
     }
     return true;
@@ -482,6 +488,7 @@ bool JupiterPhysics::checkErr(bool bRectify)
 
 void JupiterPhysics::setCheckBox(RECT rObject)
 {
+    // 90% of object rectangle.
     int w = (int)((rObject.right - rObject.left) * 0.1);
     int h = (int)((rObject.bottom - rObject.top) * 0.1);
 

@@ -228,8 +228,13 @@ public:
 
     // Decides whether the object is moving in the bounded rectangle.
     bool isPointInBound(Point pt, RECT r);
-
+    
+    // Test object's position, inside or outside of bounding box.
+    // inside -- return false.
+    // outside -- return true.
+    // if bRectify if true, set object at the edge of bounding box.
     bool checkErr(bool bRectify);
+
     // Set object collision rectangle.
     void setCheckBox(RECT rObject);
     // Return object collision rectangle.
