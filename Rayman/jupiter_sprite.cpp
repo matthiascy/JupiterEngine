@@ -1,20 +1,20 @@
 /*
- *      Copyright(C) 2014, ChenYang, Jupiter-org.
+ *      Copyright(C) 2014, ChenYang, GuoYan, Jupiter-org.
  *
  *        _______
- *       /\      \                __      __
- *       \ /-\ \-/               /\ \    /\ \
- *          \ \ \  __   __  _____\/_/   _\_\ \__   ____  ____
+ *       /\      \                 __     __
+ *       \ /-\ \-/                /\ \   /\ \
+ *          \ \ \  __   __  _____ \/_/  _\_\ \__   ____  _____
  *           \ \ \/\ \  \ \/\  __/\/\`\/\___  __\ /`__'\/\  __\
- *            \ \ \ \ \  \ \ \ \_\ \ \ \/___/\ \_ \  __/ \ \_/
- *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
- *         \/______/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
+ *            \ \ \ \ \  \ \ \ \_\ \ \ \/__/\ \_ /\  __/ \ \_/
+ *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\  \ \_\\ \____\ \_\
+ *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/\/_/
  *                            \ \_\
  *                             \/_/
  *      @file:      jupiter_sprite.cpp
  *      @author:    ChenYang :);GuoYan
- *      @date:      2014/11/25 10:09
- *      @history    2014/11/24 15:36
+ *      @date:      2014/12/02 23:08
+ *      @history    2014/11/25 10:09 2014/11/24 15:36
  *      @brief:     Implementation of JupiterSprite. You need to add additional
  *                  dependencies msimg32.lib, gdi32.lib, winmm.lib. 
  *                  Add animation process. Have fun! :-)
@@ -610,7 +610,7 @@ void JupiterSprite::drawCxImage(HDC hDC, int x, int y,
 
     int ImgType = spriteCXImage->GetType();   // Get image type.
     // Steps to draw gif animation.
-    /*下面是绘制GIF动画所需步骤*/
+    /*涓嬮潰鏄粯鍒禛IF鍔ㄧ敾鎵�闇�姝ラ*/
     if(ImgType == CXIMAGE_FORMAT_GIF) {  // GIF?
         if(timeGetTime() >= sprNextFrameTime) {	// Next frame?
             sprNextFrameTime = timeGetTime() + nFrameDelay; // Set next frame time.
