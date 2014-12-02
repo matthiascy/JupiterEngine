@@ -10,8 +10,8 @@
  *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
  *         \/______/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
  *                            \ \_\
- *                             \/file/
- *      @_:      jupiter_sprite.cpp
+ *                             \/_/
+ *      @file:      jupiter_sprite.cpp
  *      @author:    ChenYang :)
  *      @date:      2014/11/25 10:09
  *      @history    2014/11/24 15:36
@@ -610,7 +610,7 @@ void JupiterSprite::drawCxImage(HDC hDC, int x, int y,
 
     int ImgType = spriteCXImage->GetType();   // Get image type.
     // Steps to draw gif animation.
-    /*下面是绘制GIF动画所需步骤*/
+    /*涓嬮潰鏄粯鍒禛IF鍔ㄧ敾鎵�闇�姝ラ*/
     if(ImgType == CXIMAGE_FORMAT_GIF) {  // GIF?
         if(timeGetTime() >= sprNextFrameTime) {	// Next frame?
             sprNextFrameTime = timeGetTime() + nFrameDelay; // Set next frame time.
