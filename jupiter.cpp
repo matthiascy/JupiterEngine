@@ -2,13 +2,13 @@
  *      Copyright(C) 2014, ChenYang, Jupiter-org.
  *
  *        _______
- *       /\      \                __      __
- *       \ /-\ \-/               /\ \    /\ \
- *          \ \ \  __   __  _____\/_/   _\_\ \__  ____  ____
+ *       /\      \                 __     __
+ *       \ /-\ \-/                /\ \   /\ \
+ *          \ \ \  __   __  _____ \/_/  _\_\ \__  ____  _____
  *           \ \ \/\ \  \ \/\  __/\/\`\/\___  __\/`__'\/\  __\
- *            \ \ \ \ \  \ \ \ \_\ \ \ \/___/\ \_/\  __/ \ \_/
- *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
- *         \/______/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
+ *            \ \ \ \ \  \ \ \ \_\ \ \ \/__/\ \_/\  __/\ \ \_/
+ *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\  \ \_\\ \____\\ \_\
+ *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
  *      @file:      jupiter.cpp
@@ -183,12 +183,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HDC hMemDC;
             HBITMAP hbmMem, hbmOld;
             PAINTSTRUCT ps;
-            hDC=BeginPaint(hWnd, &ps);
+            hDC = BeginPaint(hWnd, &ps);
 
-            hMemDC=CreateCompatibleDC(hDC);
-            hbmMem=CreateCompatibleBitmap(hDC, Jupiter::getJupiter()->getWidth(), 
+            hMemDC = CreateCompatibleDC(hDC);
+            hbmMem = CreateCompatibleBitmap(hDC, Jupiter::getJupiter()->getWidth(), 
                 Jupiter::getJupiter()->getHeight());
-            hbmOld=(HBITMAP)SelectObject(hMemDC, hbmMem);
+            hbmOld = (HBITMAP)SelectObject(hMemDC, hbmMem);
             gamePaint(hMemDC);
             BitBlt(hDC, 0, 0, Jupiter::getJupiter()->getWidth(), 
                 Jupiter::getJupiter()->getHeight(), hMemDC, 0, 0, SRCCOPY);

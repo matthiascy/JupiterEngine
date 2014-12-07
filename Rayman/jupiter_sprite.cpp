@@ -2,13 +2,13 @@
  *      Copyright(C) 2014, ChenYang, Jupiter-org.
  *
  *        _______
- *       /\      \                __      __
- *       \ /-\ \-/               /\ \    /\ \
- *          \ \ \  __   __  _____\/_/   _\_\ \__  ____  ____
+ *       /\      \                 __     __
+ *       \ /-\ \-/                /\ \   /\ \
+ *          \ \ \  __   __  _____ \/_/  _\_\ \__  ____  _____
  *           \ \ \/\ \  \ \/\  __/\/\`\/\___  __\/`__'\/\  __\
- *            \ \ \ \ \  \ \ \ \_\ \ \ \/___/\ \_/\  __/ \ \_/
- *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
- *         \/______/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
+ *            \ \ \ \ \  \ \ \ \_\ \ \ \/__/\ \_/\  __/\ \ \_/
+ *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\  \ \_\\ \____\\ \_\
+ *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
  *      @file:      jupiter_sprite.cpp
@@ -170,7 +170,7 @@ void JupiterSprite::draw(HDC hDC, int x, int y, bool bTrans/* = false*/,
         else
             BitBlt(hDC, x, y, spriteWidth, spriteHeight, hdcMem, 0, 0, SRCCOPY);
 
-        SelectObject(hdcMem,hOldBmp);	
+        SelectObject(hdcMem, hOldBmp);	
         DeleteObject(hOldBmp);
         DeleteDC(hdcMem);		
     }
@@ -199,7 +199,7 @@ void JupiterSprite::drawRect(HDC hDC, int x, int y, int nRectX, int nRectY,
     }
 }
 
-void JupiterSprite::drawAlpha(HDC hDC,int x,int y,int nAlpha)
+void JupiterSprite::drawAlpha(HDC hDC, int x, int y, int nAlpha)
 {
     if(!spriteVisible)
         return;
@@ -583,7 +583,7 @@ bool JupiterSprite::loadCxImage(LPTSTR szFileName, bool bConvertBmp/* = false*/)
     if (!spriteCXImage->IsValid())
         return FALSE;
 
-    if(spriteCXImage->GetType()==CXIMAGE_FORMAT_GIF) {	// GIF ?
+    if (spriteCXImage->GetType() == CXIMAGE_FORMAT_GIF) {	// GIF ?
         spriteCXImage->SetRetreiveAllFrames(true);// Set all frame in one image.
         // Frame to load.
         spriteCXImage->SetFrame(spriteCXImage->GetNumFrames()-1);
@@ -591,12 +591,12 @@ bool JupiterSprite::loadCxImage(LPTSTR szFileName, bool bConvertBmp/* = false*/)
         sprNextFrameTime=0;		    // Set next frame time.
     }
 
-    if(bConvertBmp)		
-        spriteBmp= spriteCXImage->MakeBitmap();	// Convert to bitmap
+    if (bConvertBmp)		
+        spriteBmp = spriteCXImage->MakeBitmap();	// Convert to bitmap
 
-    spriteWidth=spriteCXImage->GetWidth();	// Set width.
-    spriteHeight=spriteCXImage->GetHeight();	// Set height.	
-    spriteVisible=true;			        // Visible or not.
+    spriteWidth = spriteCXImage->GetWidth();	// Set width.
+    spriteHeight = spriteCXImage->GetHeight();	// Set height.	
+    spriteVisible = true;			        // Visible or not.
 
     return true;
 }
@@ -610,15 +610,14 @@ void JupiterSprite::drawCxImage(HDC hDC, int x, int y,
 
     int ImgType = spriteCXImage->GetType();   // Get image type.
     // Steps to draw gif animation.
-    /*下面是绘制GIF动画所需步骤*/
     if(ImgType == CXIMAGE_FORMAT_GIF) {  // GIF?
-        if(timeGetTime() >= sprNextFrameTime) {	// Next frame?
+        if (timeGetTime() >= sprNextFrameTime) {	// Next frame?
             sprNextFrameTime = timeGetTime() + nFrameDelay; // Set next frame time.
 
             long m = spriteCXImage->GetNumFrames();	// Get frames count.
             long n = spriteCXImage->GetFrame() + 1; // Calc next frame index.
             if (n >= m)				// Whether is last frame index.
-                n=0;
+                n = 0;
 
             if (spriteCXImage->GetFrame(n))	// Next frame available?
                 spriteCXImage->Copy(*spriteCXImage->GetFrame(n)); // Next frame.

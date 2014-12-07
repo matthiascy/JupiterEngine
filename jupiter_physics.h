@@ -2,13 +2,13 @@
  *      Copyright(C) 2014, ChenYang, Jupiter-org.
  *
  *        _______
- *       /\      \                __      __
- *       \ /-\ \-/               /\ \    /\ \
- *          \ \ \  __   __  _____\/_/   _\_\ \__  ____  ____
+ *       /\      \                 __     __
+ *       \ /-\ \-/                /\ \   /\ \
+ *          \ \ \  __   __  _____ \/_/  _\_\ \__  ____  _____
  *           \ \ \/\ \  \ \/\  __/\/\`\/\___  __\/`__'\/\  __\
- *            \ \ \ \ \  \ \ \ \_\ \ \ \/___/\ \_/\  __/ \ \_/
- *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
- *         \/______/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
+ *            \ \ \ \ \  \ \ \ \_\ \ \ \/__/\ \_/\  __/\ \ \_/
+ *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\  \ \_\\ \____\\ \_\
+ *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
  *      @file:      jupiter_physics.h
@@ -43,15 +43,14 @@ public:
 
     const Point& operator=(const Point& pt)   
     {   
-        x=pt.x;
-        y=pt.y;
+        x = pt.x; y = pt.y;
         return *this ;
     }
     const Point operator+(const Point& pt)
     {	
         Point ptTmp;
-        ptTmp.x = x+pt.x;
-        ptTmp.y = y+pt.y;
+        ptTmp.x = x + pt.x;
+        ptTmp.y = y + pt.y;
         return ptTmp;
     }
     const Point operator-(const Point& pt)

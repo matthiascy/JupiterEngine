@@ -13,8 +13,8 @@
  *                             \/_/
  *      @file:      Rayman.h
  *      @author:    ChenYang :)
- *      @date:      2014/11/29 10:30
- *      @history:   2014/11/24 21:00
+ *      @date:      2014/12/07 12:25
+ *      @history:   2014/11/29 10:30 2014/11/24 21:00
  *      @brief:     Exciting moment, the final game. Hope you enjoy it! :-)
  */
 
@@ -28,8 +28,8 @@
 
 Jupiter*	kAmbiousPtr;		// Global Jupiter pointer.	
 
-JupiterSprite* kSprLoadScene;		// Loading scene.
-JupiterSprite* kSprBackGround;		// Blue background	
+JupiterSprite* kSprBackGround;		// Blue background
+JupiterSprite* kSprBackGroundSpace;
 
 JupiterSprite* kSprCloud[8];		// Cloud image.
 JupiterSprite* kSprThor;		// Used to draw plane image.
@@ -48,10 +48,11 @@ bool playScene1(HWND hWnd);	// Play scene 1
 JupiterMusic* kMscBGM;			// Background music.
 JupiterMusic* kMscPlaneFly;		// Plane flying music.
 
-JupiterSprite* kSprEnemy[4];	        // Enemy images.
+JupiterSprite* kSprEnemyLv1[10];	        // Enemy images.
 
 JupiterPhysics* kPhyFight;		// Plane physical actions.
-JupiterPhysics* kPhyEnemy[4];	// Enemy plane physical actions.
+JupiterPhysics* kPhyEnemyLv1[10];	// Enemy plane physical actions.
+
 
 // Bind sprite and physics
 void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType);
@@ -87,13 +88,13 @@ public:
 	bool play()	// Play animation.
 	{
             if(!jupiBlastFree && (jupiBlastEndTime <= timeGetTime())) {
-			jupiBlastSprite->setVisible(false);
-			jupiBlastSprite = NULL;
-			jupiBlastEndTime = 0;
-			jupiBlastFree = true;
-			return true;
+		jupiBlastSprite->setVisible(false);
+		jupiBlastSprite = NULL;
+		jupiBlastEndTime = 0;
+		jupiBlastFree = true;
+		return true;
 	    } else {
-			return false;
+		return false;
 	    }
 	}
 
@@ -106,8 +107,13 @@ JupiterSprite* kSprJupiterBlast;		// Blast sprite.
 JupiterPhysics* kPhyShot;	// Bullet movement physics object.
 JupiterSprite* kSprShot;	// Bullet sprite.
 
+JupiterSprite* kSprShots[8];
+JupiterPhysics* kPhyShots[8];
+
 bool kIsShotEnemy;		// Shot enemy;
 bool kShotFighter;		// Crashed by enemy?
 
 int kResult;			// Score.
-JupiterSprite* g_pSprGameOver;	// Game over.
+JupiterSprite* kSprGameOver;	// Game over.
+JupiterBlast* kBlastLoadScene;
+JupiterSprite* kSprLoadScene;		// Loading scene.

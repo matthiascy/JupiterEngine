@@ -65,6 +65,16 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 //
 
 IDC_CURSOR              CURSOR                  "res\\Arrow.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_BIG            ICON                    "res\\iconb.ico"
+IDI_ICON_SMALL          ICON                    "res\\icons.ico"
 #endif    // English (U.K.) resources
 /////////////////////////////////////////////////////////////////////////////
 

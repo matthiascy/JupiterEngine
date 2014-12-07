@@ -287,6 +287,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\iconb.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icons.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\Rayman.rc"
 				>
 			</File>

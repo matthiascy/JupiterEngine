@@ -2,13 +2,13 @@
  *      Copyright(C) 2014, ChenYang, Jupiter-org.
  *
  *        _______
- *       /\      \                __      __
- *       \ /-\ \-/               /\ \    /\ \
- *          \ \ \  __   __  _____\/_/   _\_\ \__  ____  ____
+ *       /\      \                 __     __
+ *       \ /-\ \-/                /\ \   /\ \
+ *          \ \ \  __   __  _____ \/_/  _\_\ \__  ____  _____
  *           \ \ \/\ \  \ \/\  __/\/\`\/\___  __\/`__'\/\  __\
- *            \ \ \ \ \  \ \ \ \_\ \ \ \/___/\ \_/\  __/ \ \_/
- *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\   \ \_\\ \____\ \_\
- *         \/______/\/____/_/\ \ \   \/_/    \/_/ \/____/\/_/
+ *            \ \ \ \ \  \ \ \ \_\ \ \ \/__/\ \_/\  __/\ \ \_/
+ *         /\` ` \ \ \ \--\ \ \ \_'/\ \_\  \ \_\\ \____\\ \_\
+ *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
  *      @file:      jupiter_sprite.h
@@ -49,22 +49,23 @@ protected:
     // Handle of the bitmap that sprite holds.
     HBITMAP spriteBmp;
     // Sprite's bitmap width, height, and the Z order.
-    int	spriteWidth,spriteHeight;
+    int	spriteWidth, spriteHeight;
     // Decides which layer the sprite in.
     int	spriteZOrder;
     // Frame width and height that consists animation in a sprite bitmap.
-    int	spriteFrameWidth,spriteFrameHeight;
+    int	spriteFrameWidth, spriteFrameHeight;
     // Frame count.
-    int	spriteRowCount,spriteColCount;
+    int	spriteRowCount, spriteColCount;
     // Current sprite frame row and col, same function with i, j in a for loop.
-    int spriteRow,spriteCol;
+    int spriteRow, spriteCol;
     // Each animation frame delay.
     int	sprFrameDelay;
     // Time to draw next frame.
     unsigned long sprNextFrameTime;
     // Indicates whether the animation is initialized or not.
     bool isInitAni;
-
+    // Indicates whether the animation is finished.
+    bool isFiniAni;
 
     
     // Attributes used to manage sprites.
@@ -232,6 +233,10 @@ public:
     // Set drawCxImage() parameters.
     void setDrawCxImageInfo(int x, int y, int nWidth = 0, int nHeight = 0, 
                             int nFrameDelay = 100);
+
+    bool getIsFiniAni();
+    void setIsFiniAni();
+    void setNextFrameTime(int n) {sprNextFrameTime += n;};
 
 private:
     // Method to draw transparent bitmap, DIY, :)

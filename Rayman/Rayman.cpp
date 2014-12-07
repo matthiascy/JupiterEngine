@@ -12,9 +12,9 @@
  *                            \ \_\
  *                             \/_/
  *      @file:      Rayman.cpp
- *      @author:    ChenYang :)
- *      @date:      2014/11/29 10:30
- *      @history:   2014/11/24 21:00
+ *      @author:    ChenYang :) GuoYan
+ *      @date:      2014/12/7 12:14
+ *      @history:   2014/11/29 10:30 2014/11/24 21:00
  *      @brief:     Exciting moment, the final game. Hope you enjoy it! :-)
  */
 #include "Rayman.h"
@@ -24,7 +24,7 @@
 bool gameInitialize(HINSTANCE hInstance)
 {
     kAmbiousPtr = new Jupiter(hInstance, TEXT("Rayman"), TEXT("Rayman"),
-        /*IDI_BIGICON*/NULL, /*IDI_SMALLICON*/ NULL, 
+        IDI_ICON_BIG, IDI_ICON_SMALL, 
         false, 32, 450, 600);
     if(kAmbiousPtr == NULL)
         return false;
@@ -37,7 +37,6 @@ bool gameInitialize(HINSTANCE hInstance)
             "Error", MB_OK | MB_ICONERROR);
         return false;
     }
-
     return true;
 }
 
@@ -47,19 +46,16 @@ void gameStart(HWND hWnd)
     long lCur = (long)LoadCursor(kAmbiousPtr->getInstance(), MAKEINTRESOURCE(IDC_CURSOR));
     SetClassLong(hWnd, GCL_HCURSOR, lCur);
 
-    kSprLoadScene = new JupiterSprite(NULL, "res\\LoadScene.bmp");
+    kSprLoadScene = new JupiterSprite("res\\loading.gif");
 
-
-    kSceneNo=1;	
+    kSceneNo = 1;	
     kIsInitScene = false;	
 
     initScene1(hWnd);
-
 }
 
 void gameAction(HWND hWnd)
 {
-
     if(kIsInitScene) {
         playScene1(hWnd);
     }
@@ -78,7 +74,6 @@ bool initScene1(HWND hWnd)
     kSprCloud[6] = new JupiterSprite("res\\cloud_7.png");
     kSprCloud[7] = new JupiterSprite("res\\cloud_8.png");
 
-
     kSprThorPic[0] = new JupiterSprite("res\\FighterPlane.png");
     kSprThorPic[1] = new JupiterSprite("res\\FighterPlaneL.png");
     kSprThorPic[2] = new JupiterSprite("res\\FighterPlaneR.png");
@@ -86,24 +81,21 @@ bool initScene1(HWND hWnd)
     kSprThor = new JupiterSprite();
     kSprThor->setCxImage(kSprThorPic[0]->load());
 
-
     // Use DC to create blue background.
     HDC hDCTmp = GetDC(hWnd);
     kSprBackGround = new JupiterSprite(hDCTmp, kAmbiousPtr->getWidth(),
         kAmbiousPtr->getHeight(), RGB(40, 80, 160));
     ReleaseDC(hWnd, hDCTmp);
 
-    kSprBackGround->setDrawInfo(0,0);
+    kSprBackGroundSpace = new JupiterSprite("res\\space_1.png");
+    kSprBackGroundSpace->setDrawCxImageInfo(0, 0, 450, 600);
+
+    kSprBackGround->setDrawInfo(0, 0);
     kSprManage.addSprite(kSprBackGround, 0);
 
-    kSprManage.addSprite(kSprCloud[0], 1);
-    kSprManage.addSprite(kSprCloud[1], 1);
-    kSprManage.addSprite(kSprCloud[2], 1);
-    kSprManage.addSprite(kSprCloud[3], 1);
-    kSprManage.addSprite(kSprCloud[4], 1);
-    kSprManage.addSprite(kSprCloud[5], 1);
-    kSprManage.addSprite(kSprCloud[6], 1);
-    kSprManage.addSprite(kSprCloud[7], 1);
+    for (int i = 0; i < 8; i++) {
+        kSprManage.addSprite(kSprCloud[i], 1);
+    }
 
     kSprManage.addSprite(kSprThor, 3);
 
@@ -114,27 +106,30 @@ bool initScene1(HWND hWnd)
     }
 
     // Create music object and open it.
-    kMscPlaneFly = new JupiterMusic("res\\fly.wav");
-    kMscBGM = new JupiterMusic("res\\bgm.mp3");
+    kMscPlaneFly = new JupiterMusic("res\\music\\fly.wav");
+//    kMscBGM = new JupiterMusic("res\\bgm.mp3");
+    kMscBGM = new JupiterMusic("res\\music\\bgm4.mp3");
     kMscBGM->play();
 
     // Enemy plane.
-    kSprEnemy[0] = new JupiterSprite("res\\enemy1.png");
-    kSprEnemy[1] = new JupiterSprite("res\\enemy2.png");
-    kSprEnemy[2] = new JupiterSprite("res\\enemy3.png");
-    kSprEnemy[3] = new JupiterSprite("res\\enemy4.png");
-
-    kSprManage.addSprite(kSprEnemy[0], 3);
-    kSprManage.addSprite(kSprEnemy[1], 3);
-    kSprManage.addSprite(kSprEnemy[2], 3);
-    kSprManage.addSprite(kSprEnemy[3], 3);
-
+    kSprEnemyLv1[0] = new JupiterSprite("res\\enemy1.png");
+    kSprEnemyLv1[1] = new JupiterSprite("res\\enemy2.png");
+    kSprEnemyLv1[2] = new JupiterSprite("res\\enemy3.png");
+    kSprEnemyLv1[3] = new JupiterSprite("res\\enemy4.png");
+    
+    kSprEnemyLv1[4] = new JupiterSprite("res\\omni_1.png");
+    
+    kSprEnemyLv1[5] = new JupiterSprite("res\\omni_2.png");
+    kSprEnemyLv1[6] = new JupiterSprite("res\\omni_3.png");
+    kSprEnemyLv1[7] = new JupiterSprite("res\\omni_4.png");
+    kSprEnemyLv1[8] = new JupiterSprite("res\\omni_5.png");
+    kSprEnemyLv1[9] = new JupiterSprite("res\\omni_6.png");
+    
     // Create physics object.
-    kPhyEnemy[0] = new JupiterPhysics();
-    kPhyEnemy[1] = new JupiterPhysics();
-    kPhyEnemy[2] = new JupiterPhysics();
-    kPhyEnemy[3] = new JupiterPhysics();
-
+    for (int i = 0; i < 10; i++) {
+        kSprManage.addSprite(kSprEnemyLv1[i], 3);
+        kPhyEnemyLv1[i] = new JupiterPhysics();
+    }
 
     // Bound plane with physics object.
     RECT rObject = {200, 400, 300, 500};
@@ -157,22 +152,29 @@ bool initScene1(HWND hWnd)
     Point ptVeloShot = {0, 10};
     Point ptAccelerateShot = {0, 0};
     Point ptDesShot = {0, 0};
-    kPhyShot=new JupiterPhysics(rObjectShot, rBoundShot, ptFocusShot,
+    kPhyShot = new JupiterPhysics(rObjectShot, rBoundShot, ptFocusShot,
         ptVeloShot, ptAccelerateShot, ptDesShot, false);
 
     kPhyShot->setVisible(false);
-    kSprManage.addSprite(kSprShot, 4);	
+    kSprManage.addSprite(kSprShot, 4);
 
-
+    for (int i = 0; i < 8; i++) {
+        kSprShots[i] = new JupiterSprite("res\\Shot.png");
+        kPhyShots[i] = new JupiterPhysics(rObjectShot, rBoundShot, ptFocusShot,
+            ptVeloShot, ptAccelerateShot, ptDesShot, false);
+        kPhyShots[i]->setVisible(false);
+        kSprManage.addSprite(kSprShots[i], 4);
+    }
 
     // Blast and game end scene.
     kSprJupiterBlast = new JupiterSprite("res\\bom.gif");
-    g_pSprGameOver = new JupiterSprite("res\\GameOver.png");
+    kSprGameOver = new JupiterSprite("res\\GameOver.png");
     kSprManage.addSprite(kSprJupiterBlast, 4);
-    kSprManage.addSprite(g_pSprGameOver, 4);
+    kSprManage.addSprite(kSprGameOver, 4);
+    kSprManage.addSprite(kSprBackGroundSpace, 0);
 
-    g_pSprGameOver->setDrawCxImageInfo(30, 300);
-    g_pSprGameOver->setVisible(false);
+    kSprGameOver->setDrawCxImageInfo(50, 300);
+    kSprGameOver->setVisible(false);
 
     kIsShotEnemy = false;	
     kShotFighter = false;	
@@ -181,7 +183,7 @@ bool initScene1(HWND hWnd)
 
     kIsInitScene = true;
 
-    return true;
+   return true;
 }
 
 void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
@@ -189,7 +191,8 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
     srand((unsigned)time(NULL));
     // horizontal position.
     int x = rand() % (kAmbiousPtr->getWidth() - spr->getWidth());
-
+    
+    //Point ptPath[4][8];
     // Plane's generation place. (plane_x, -plane_y)
     // plane_x is a random number between 0 ~ Thor's width - Enemy's width
     // plane_y is negative of plane's height.
@@ -224,9 +227,41 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
         {x+100, 300},
         {x, kAmbiousPtr->getHeight()}
     };
+    
+    Point ptPath_1[8] = {
+        {x+100, -spr->getHeight()},
+        {x+100, 100}, 
+        {x+100, 100 + rand()%spr->getHeight()}, 
+        {x+200, 100 + rand()%spr->getHeight()}, 
+        {x-100, 100 + rand()%spr->getHeight()}, 
+        {x-100, 200 + rand()%spr->getHeight()}, 
+        {x+100, 200 - rand()%spr->getHeight()}, 
+        {x, kAmbiousPtr->getHeight()}
+    };
 
+    Point ptPath_2[8] = {
+        {x+100, -spr->getHeight()},
+        {x+100, 100},
+        {x+200, 100 + rand()%spr->getHeight()},
+        {x-100, 100}, 
+        {x + rand()%spr->getHeight(), 200},
+        {x+100, 200},
+        {x+100, 300},
+        {x, kAmbiousPtr->getHeight()}
+    };
+
+    Point ptPath_3[8] = {
+        {x+100, -spr->getHeight()},
+        {x+150, 100},
+        {x+250, 250},
+        {x-100, 150}, 
+        {x-150, 220},
+        {x+100, 200},
+        {x+100, 350},
+        {x, kAmbiousPtr->getHeight()}
+    };
     // If don't move, reset physics.
-        if((phy->getPathArrive() && nType == 2) || (!phy->getMoveState() && nType == 1)) {
+        if ((phy->getPathArrive() && nType == 2) || (!phy->getMoveState() && nType == 1)) {
             RECT rObject = {x, -spr->getHeight(), x+spr->getWidth(), 0};
             RECT rBound = {0, -spr->getHeight(), kAmbiousPtr->getWidth(), 
                 kAmbiousPtr->getHeight() + spr->getHeight()};
@@ -241,10 +276,22 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
     // Move as type indicated.
     switch(nType) {
         case 1:
-            phy->moveToDes();
+            srand(time(NULL));
+            switch((rand()%100)%3) {
+                case 0:
+                    phy->moveAlongPath(ptPath_1, 8);
+                    break;
+                case 1:
+                    phy->moveToDes();
+                    break;
+                case 2:
+                    phy->moveAlongPath(ptPath_3, 8);
+                    break;
+            }
             break;
+
         case 2:
-            phy->moveAlongPath(ptPath, 8);
+            phy->moveAlongPath(ptPath_2, 8);
             break;
     }
 
@@ -256,7 +303,6 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
 
 bool playScene1(HWND hWnd)
 {	
-
     for (int i = 0; i < 8; i++) {	// Clouds position and z order.
         // Reach bottom.
         if (kCloudPt[i].y > kAmbiousPtr->getHeight()) {
@@ -279,20 +325,18 @@ bool playScene1(HWND hWnd)
         }
         kSprCloud[i]->setDrawCxImageInfo(kCloudPt[i].x, kCloudPt[i].y);
     }
-
-    setEnemyInfo(kSprEnemy[0], kPhyEnemy[0], 2);
-    setEnemyInfo(kSprEnemy[1], kPhyEnemy[1], 2);
-    setEnemyInfo(kSprEnemy[2], kPhyEnemy[2], 1);
-    setEnemyInfo(kSprEnemy[3], kPhyEnemy[3], 1);
-
+    
+    for (int i = 0; i < 10; i++) {
+        setEnemyInfo(kSprEnemyLv1[i], kPhyEnemyLv1[i], i%2+1);
+    }
     // Enemy crashed with Thor or shotted by bullet.
     RECT r1, r2;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 10; i++) {
         // Crashed with Thor?
-        if (kPhyEnemy[i]->collision(kPhyFight, BA_CLEAR, &r1)) {
-            kPhyEnemy[i]->setVisible(false);
-            kSprEnemy[i]->setVisible(false);
+        if (kPhyEnemyLv1[i]->collision(kPhyFight, BA_CLEAR, &r1)) {
+            kPhyEnemyLv1[i]->setVisible(false);
+            kSprEnemyLv1[i]->setVisible(false);
             kPhyFight->setVisible(false);
             kSprThor->setVisible(false);
             kShotFighter = true;
@@ -301,13 +345,12 @@ bool playScene1(HWND hWnd)
 
         // Whether been shotted.
         if (kPhyShot->getMoveState()) {
-            if (kSprEnemy[i]->getVisible() && kSprShot->getVisible()) {
-                if (kPhyEnemy[i]->collision(kPhyShot, BA_CLEAR, &r2)) {
+            if (kSprEnemyLv1[i]->getVisible() && kSprShot->getVisible()) {
+                if (kPhyEnemyLv1[i]->collision(kPhyShot, BA_CLEAR, &r2)) {
                     kIsShotEnemy = true;
                     kSprShot->setVisible(false);
                     kPhyShot->setMoveState(false);
-                    kSprEnemy[i]->setVisible(false);
-
+                    kSprEnemyLv1[i]->setVisible(false);
                     kJupiterBlast.set(kSprJupiterBlast, r2, 800); // Blast ani.
 
                     switch (i)  { // Score
@@ -318,10 +361,20 @@ bool playScene1(HWND hWnd)
                             kResult += 10;
                             break;
                         case 2:
+                        case 7:
                             kResult += 3;
                             break;
                         case 3:
+                        case 8:
+                        case 9:
                             kResult += 2;
+                            break;
+                        case 4:
+                            kResult += 4;
+                            break;
+                        case 5:
+                        case 6:
+                            kResult += 7;
                             break;
                     }
                 }		
@@ -339,18 +392,20 @@ bool playScene1(HWND hWnd)
     }
 
     // Thor crashed, not game over, display game over.
-    if (kShotFighter && !g_pSprGameOver->getVisible()) {
+    if (kShotFighter && !kSprGameOver->getVisible()) {
         kJupiterBlast.set(kSprJupiterBlast, r1, 3000);
-        g_pSprGameOver->setVisible(true);
+        kSprGameOver->setVisible(true);
+        //kSprLoadScene->setVisible(true);
+        //kSprLoadScene->drawCxImage(GetDC(hWnd), 0, 0);
     }
 
-    if (!kJupiterBlast.isFree())	 {// Blast animation finished.
+    if (!kJupiterBlast.isFree()) {// Blast animation finished.
         // Thor blasted?
         if (kJupiterBlast.play() && kShotFighter)
             if (MessageBox(kAmbiousPtr->getWindow(), "Game Over!Try again?",
                 "GameOver", MB_YESNO | MB_DEFBUTTON2 | MB_ICONASTERISK) == IDYES) {
                 kJupiterBlast.set(kSprJupiterBlast, r1, 3000);
-                g_pSprGameOver->setVisible(false);
+                kSprGameOver->setVisible(false);
                 kSprManage.release(true);
                 delete kPhyFight;
                 delete kPhyShot;
@@ -366,25 +421,33 @@ bool playScene1(HWND hWnd)
 
 void gamePaint(HDC hDC)
 {
-    if (!kIsInitScene)
-        kSprLoadScene->draw(hDC, 0, 0);
-    else
+    if (!kIsInitScene) {
+        //kSprLoadScene->setDrawCxImageInfo(0, 0, 450, 600, 5);
+        kSprLoadScene->drawCxImage(hDC, 0, 0);
+    }
+    else {
         kSprManage.draw(hDC);
+    }
     // Draw point.
-    SetBkMode(hDC, TRANSPARENT);   	// Background is transparent.
-    SetTextColor(hDC, RGB(255, 255, 0));	// Text color is yellow.
+    SetBkMode(hDC, TRANSPARENT);
     char szResult[20];
-    sprintf(szResult, "result:%d", kResult);
+    sprintf(szResult, "Score:%d", kResult);		
 
-    RECT rResult = { 300, 10, 400, 40 };
-    DrawText(hDC, szResult, -1, &rResult, DT_LEFT);		
+    HFONT hFont = CreateFont(40, 40, 0, 0, FW_REGULAR, false, false, false,
+        ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, 
+        FIXED_PITCH | FF_MODERN, "Petala Pro");
+    HFONT hOldFont = (HFONT)SelectObject(hDC, hFont);
+    SetTextColor(hDC, 0x00ee00);
+    TextOut(hDC, 10, 550, szResult, (int)strlen(szResult));
+    SelectObject(hDC, hOldFont);
+    DeleteObject(hFont);
 }
 
 void gameEnd()
 {
     delete kMscBGM;
     delete kMscPlaneFly;
-    delete[] (*kPhyEnemy); 
+    delete[] (*kPhyEnemyLv1); 
     delete kPhyFight;
     kSprManage.release(true);
     delete kSprLoadScene;
@@ -403,7 +466,7 @@ void gamePause(HWND hWnd)
 
 bool gameWindowClose(HWND hWnd)
 {
-    if(MessageBox(kAmbiousPtr->getWindow(), "Are you sure to quit? T_T", "Quit",
+    if (MessageBox(kAmbiousPtr->getWindow(), "Are you sure to quit? T_T", "Quit",
         MB_YESNO | MB_DEFBUTTON2 | MB_ICONASTERISK) == IDYES)
         return true;
     else
@@ -418,7 +481,7 @@ void keyEvent(HWND hWnd)
         kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
             kPhyFight->getLeftTop().y, 100, 100);
         kSprThor->setCxImage(kSprThorPic[0]->load());
-        kMscPlaneFly->play(300,false,false);
+        kMscPlaneFly->play(300, false, false);
     } else if (GetAsyncKeyState(VK_DOWN) < 0) {
         kPhyFight->moveDirect(DI_DOWN);	
         kPhyFight->checkErr(true);		
@@ -456,7 +519,6 @@ void keyEvent(HWND hWnd)
             kPhyFight->getLeftTop().y, 100, 100);
     }
 
-
     if (GetAsyncKeyState('S') < 0) {// S pressed? if no bullet in scene, beam bullet.
         if (!kPhyShot->getMoveState() && kSprThor->getVisible()) {
             Point pt = {(kPhyFight->getPos().x + kPhyFight->getWidth() / 2), 
@@ -466,7 +528,7 @@ void keyEvent(HWND hWnd)
             kPhyShot->setMoveState(true);
             kPhyShot->setVisible(true);
             kSprShot->setVisible(true);
-        }
+        }   
     }
 }
 
