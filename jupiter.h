@@ -1,5 +1,5 @@
 /*
- *      Copyright(C) 2014, ChenYang, Jupiter-org.
+ *      Copyright(C) 2014, Jupiter-org.
  *                                        
  *        _______
  *       /\      \                 __     __
@@ -11,8 +11,9 @@
  *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
+ *
  *      @file:      jupiter.h
- *      @author:    ChenYang :)
+ *      @author:    ChenYang :) GuoYan
  *      @date:      2014/11/25 10:32
  *      @history:   2014/11/24 15:12
  *      @brief:     This file encapsulate basic functions of Win32 API that

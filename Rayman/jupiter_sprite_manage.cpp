@@ -1,7 +1,7 @@
 /*
- *      Copyright(C) 2014, ChenYang, Jupiter-org.
+ *      Copyright(C) 2014, Jupiter-org.
  *
-  *        _______
+ *        _______
  *       /\      \                 __     __
  *       \ /-\ \-/                /\ \   /\ \
  *          \ \ \  __   __  _____ \/_/  _\_\ \__  ____  _____
@@ -11,8 +11,9 @@
  *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
+ *
  *      @file:      jupiter_sprite_manage.cpp
- *      @author:    ChenYang :)
+ *      @author:    ChenYang :) GuoYan
  *      @date:      2014/11/25 10:47
  *      @brief:     Once you created lots of sprites, how to manage them? Aye,
  *                  you get it, use what this file provided for you.

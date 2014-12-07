@@ -1,5 +1,5 @@
 /*
- *      Copyright(C) 2014, ChenYang, Jupiter-org.
+ *      Copyright(C) 2014, Jupiter-org.
  *
  *        _______
  *       /\      \                 __     __
@@ -11,6 +11,7 @@
  *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
+ *
  *      @file:      jupiter_physics.cpp
  *      @author:    ChenYang :)
  *      @date:      2014/11/28 10:24

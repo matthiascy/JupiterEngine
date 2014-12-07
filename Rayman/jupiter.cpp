@@ -1,5 +1,5 @@
 /*
- *      Copyright(C) 2014, ChenYang, Jupiter-org.
+ *      Copyright(C) 2014, Jupiter-org.
  *
  *        _______
  *       /\      \                 __     __
@@ -11,8 +11,9 @@
  *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
+ *
  *      @file:      jupiter.cpp
- *      @author:    ChenYang :)
+ *      @author:    ChenYang :) GuoYan
  *      @date:      2014/11/24 15:36
  *      @brief:     Implementation of Jupiter. You need to add additional
  *                  dependencies user32.lib, winmm.lib, gdi32.lib.

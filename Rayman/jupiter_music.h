@@ -1,5 +1,5 @@
 /*
- *      Copyright(C) 2014, ChenYang, Jupiter-org.
+ *      Copyright(C) 2014, Jupiter-org.
  *
  *        _______
  *       /\      \                 __     __
@@ -11,8 +11,9 @@
  *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
+
  *      @file:      jupiter_music.h
- *      @author:    ChenYang :)
+ *      @author:    ChenYang :) GuoYan WeiFuJiang
  *      @date:      2014/11/27 17:13
  *      @brief:     What a exciting moment, you can play music now!
  *                  Enjoy yourself! :-)

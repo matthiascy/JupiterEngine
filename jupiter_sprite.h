@@ -1,5 +1,5 @@
 /*
- *      Copyright(C) 2014, ChenYang, Jupiter-org.
+ *      Copyright(C) 2014, Jupiter-org.
  *
  *        _______
  *       /\      \                 __     __
@@ -11,8 +11,9 @@
  *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
+
  *      @file:      jupiter_sprite.h
- *      @author:    ChenYang :)
+ *      @author:    ChenYang :) GuoYan
  *      @date:      2014/11/26 17:52
  *      @history:   2014/11/25 10:06 2014/11/24 23:08, 2014/11/24 18:13 
  *      @brief:     You this powerful class to create your own object in game,

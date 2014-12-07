@@ -1,5 +1,5 @@
 /*
- *      Copyright(C) 2014, ChenYang, Jupiter-org.
+ *      Copyright(C) 2014, Jupiter-org.
  *
  *        _______
  *       /\      \                 __     __
@@ -11,8 +11,9 @@
  *         \/______/\/____/_/\ \ \   \/_/   \/_/ \/____/ \/_/
  *                            \ \_\
  *                             \/_/
+ *
  *      @file:      jupiter_physics.h
- *      @author:    ChenYang :)
+ *      @author:    ChenYang :) GuoYan
  *      @date:      2014/11/28 10:24
  *      @history:   2014/11/24 20:40
  *      @brief:     Interesting JupiterPhysics. Make you game object behave 
