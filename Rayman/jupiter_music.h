@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -27,14 +28,6 @@
 #include "mmsystem.h"
 
 class JupiterMusic {
-protected:
-    // Statistics every music you added, signs each one a unique id.
-    static int jupiterMusicID;
-    // Music id.
-    int jupiMscID;
-    // Music volume.
-    int jupiMscVolume;
-
 public:
     JupiterMusic();
     // Construct JupiterMusic from szMusicPath.
@@ -68,6 +61,13 @@ public:
     //          bReStart -- restart or not. False by default
     bool play(int nVolume = 300, bool bRepeat = false, bool bReStart = false);
 
+protected:
+    // Statistics every music you added, signs each one a unique id.
+    static int jupiterMusicID;
+    // Music id.
+    int jupiMscID;
+    // Music volume.
+    int jupiMscVolume;
 };
 
 #endif // __JUPITER_MUSIC_H__

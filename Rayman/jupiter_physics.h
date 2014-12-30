@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -63,33 +64,7 @@ public:
     }
 } Point;
 
-class JupiterPhysics
-{
-protected:
-    Point	jupiPhyPtFocus;  // Object's focus coord, relative to left-top.
-    Point	jupiPhyPtPos;    // Object's position in the world coord.
-    RECT	jupiPhyRectObject;      // Object's rectangle region.
-    RECT	jupiPhyRectFocusBound;  // Focus' range of motion.
-    RECT	jupiPhyRectBound;       // Object's range of motion.
-
-
-    Point	jupiPhyPtVelo;          // Velocity vector.
-    Point	jupiPhyPtAccelerate;    // Acceleration.
-    float	jupiPhyStep;  // Movement stride, same with velocity magnitude.
-    Point	jupiPhyPtDes; // Destination position.
-
-    DIRECTION	jupiPhyDirect;         // Movement direction.
-
-    bool	jupiPhyMove;           // Motion state.
-
-    bool	jupiPhyPathArrive;     // Reach breakpoint?
-    int		jupiPhyPathIndex;      // Path index, ie. breakpoint.
-    bool	jupiPhyInitIndex;      // Initialized path index?
-
-    bool	jupiPhyVisible;        // Object's visibility.
-    BOUNDACTION	jupiPhyBoundAction;    // Actions after collision
-    RECT	jupiPhyRectCheckBox;   // Collision detection box.
-
+class JupiterPhysics {
 public:
     JupiterPhysics();
 
@@ -189,8 +164,9 @@ public:
     DIRECTION getDirect() { return jupiPhyDirect; };
 
     // Set object acceleration.
-    void setAccelerate(Point ptAccelerate) { jupiPhyPtAccelerate = 
-        ptAccelerate; };
+    void setAccelerate(Point ptAccelerate) {
+        jupiPhyPtAccelerate = ptAccelerate;
+    };
     // Overloaded setAccelerate(...).
     void setAccelerate(float x, float y);
 
@@ -206,7 +182,7 @@ public:
 
     void setObject(RECT rObject, RECT rBound);
     void setObject(RECT rObject, RECT rBound, Point ptFocus, Point ptVelo, 
-                    Point ptAccelerate, Point ptDes, bool bMove);
+                   Point ptAccelerate, Point ptDes, bool bMove);
 
     // Uniform motion.
     void uniformMove();
@@ -247,6 +223,30 @@ public:
     // Two objects move in themselves' speed, detect collision between them.
     bool collision(JupiterPhysics* ph, BOUNDACTION action, RECT* rcollision);
 
+protected:
+    Point	jupiPhyPtFocus;  // Object's focus coord, relative to left-top.
+    Point	jupiPhyPtPos;    // Object's position in the world coord.
+    RECT	jupiPhyRectObject;      // Object's rectangle region.
+    RECT	jupiPhyRectFocusBound;  // Focus' range of motion.
+    RECT	jupiPhyRectBound;       // Object's range of motion.
+
+
+    Point	jupiPhyPtVelo;          // Velocity vector.
+    Point	jupiPhyPtAccelerate;    // Acceleration.
+    float	jupiPhyStep;  // Movement stride, same with velocity magnitude.
+    Point	jupiPhyPtDes; // Destination position.
+
+    DIRECTION	jupiPhyDirect;         // Movement direction.
+
+    bool	jupiPhyMove;           // Motion state.
+
+    bool	jupiPhyPathArrive;     // Reach breakpoint?
+    int		jupiPhyPathIndex;      // Path index, ie. breakpoint.
+    bool	jupiPhyInitIndex;      // Initialized path index?
+
+    bool	jupiPhyVisible;        // Object's visibility.
+    BOUNDACTION	jupiPhyBoundAction;    // Actions after collision
+    RECT	jupiPhyRectCheckBox;   // Collision detection box.
 };
 
 #endif // __JUPITER_PHYSICS_H__

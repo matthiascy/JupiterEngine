@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -51,10 +52,10 @@ bool JupiterSpriteManage::addSprite(JupiterSprite * pSprite, int nZorder)
     return false;
 }
 
-void JupiterSpriteManage::release(bool bdelSprite)
+void JupiterSpriteManage::release(bool delSprite)
 {
     if (!jupiSprites.empty()) {
-        if(bdelSprite) {
+        if(delSprite) {
             vector<JupiterSprite *>::iterator curSprite;
             for (curSprite = jupiSprites.begin(); curSprite != jupiSprites.end();
                 curSprite++)
@@ -65,20 +66,20 @@ void JupiterSpriteManage::release(bool bdelSprite)
     }
 }
 
-void JupiterSpriteManage::delSprite(JupiterSprite* pSprite, bool bdelSprite,
+void JupiterSpriteManage::delSprite(JupiterSprite* pSprite, bool delSprite,
                                     bool bCompress)
 {
     if (!jupiSprites.empty()) {
         vector<JupiterSprite*>::iterator curSprite;
         for (curSprite = jupiSprites.begin(); curSprite != jupiSprites.end();
             curSprite++)
-            if((*curSprite)->getID() == pSprite->getID()) {
-                if(bdelSprite)
-                    delete pSprite;			
+            if ((*curSprite)->getID() == pSprite->getID()) {
+                if (delSprite) delete pSprite;			
+
                 jupiSprites.erase(curSprite);
                 break;
             }
-            if(bCompress)
+            if (bCompress)
                 vector<JupiterSprite *>(jupiSprites).swap(jupiSprites);
     }
 }
@@ -89,7 +90,7 @@ bool JupiterSpriteManage::findSprite(JupiterSprite* pSprite)
         vector<JupiterSprite*>::iterator curSprite;
         for (curSprite = jupiSprites.begin(); curSprite != jupiSprites.end();
             curSprite++)
-            if((*curSprite)->getID() == pSprite->getID())
+            if ((*curSprite)->getID() == pSprite->getID())
                 return true;
     }
     return false;	
@@ -102,11 +103,10 @@ void JupiterSpriteManage::setSpriteVisible(JupiterSprite* pSprite, bool bVisible
 
 void JupiterSpriteManage::draw(HDC hDC)
 {
-    if (!jupiSprites.empty())
-    {
+    if (!jupiSprites.empty()) {
         vector<JupiterSprite *>::iterator curSprite;
-        for (curSprite = jupiSprites.begin(); curSprite != jupiSprites.end(); curSprite++)
-        {
+        for (curSprite = jupiSprites.begin(); curSprite != jupiSprites.end();
+            curSprite++) {
             (*curSprite)->drawSprite(hDC);
         }
     }

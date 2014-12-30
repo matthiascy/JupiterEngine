@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -50,7 +51,7 @@ void JupiterPhysics::setObjectRect(RECT r)
 {
     CopyRect(&jupiPhyRectObject, &r);
     setCheckBox(jupiPhyRectObject);     // Collision detection rectangle.
-};
+}
 
 void JupiterPhysics::setObjectRect(int left, int top, int right, int bottom)
 {
@@ -334,33 +335,38 @@ void JupiterPhysics::moveDirect(DIRECTION Direct)
 {
     Point ptDes;
     switch(Direct) {
-        case DI_LEFT:
+        case DI_LEFT: {
             ptDes.x = jupiPhyPtPos.x - jupiPhyStep;
             ptDes.y = jupiPhyPtPos.y;
             break;
+        }
 
-        case DI_RIGHT:
+        case DI_RIGHT: {
             ptDes.x = jupiPhyPtPos.x + jupiPhyStep;
             ptDes.y = jupiPhyPtPos.y;
             break;
+        }
 
-        case DI_UP:
+        case DI_UP: {
             ptDes.x = jupiPhyPtPos.x;
             ptDes.y = jupiPhyPtPos.y - jupiPhyStep;
             break;
+        }
 
-        case DI_DOWN:
+        case DI_DOWN: {
             ptDes.x = jupiPhyPtPos.x;
             ptDes.y = jupiPhyPtPos.y + jupiPhyStep;
-            break;	
+            break;
+        }
 
-        default:
+        default: {
             ptDes = jupiPhyPtPos;
             break;
+        }
     }
 
     setPos(ptDes);
-};
+}
 
 void JupiterPhysics::uniformMove2(BOUNDACTION action)
 {
@@ -376,12 +382,13 @@ void JupiterPhysics::uniformMove2(BOUNDACTION action)
     }
 
     switch(action) {
-        case BA_STOP:
+        case BA_STOP: {
             moveToDes();
             setMoveState(false);
             break;
+        }
 
-        case BA_LOOP:
+        case BA_LOOP: {
             if (pt.x > jupiPhyRectFocusBound.right)
                 pt.x = (float)jupiPhyRectFocusBound.left;
             else if (pt.x < jupiPhyRectFocusBound.left)
@@ -392,18 +399,21 @@ void JupiterPhysics::uniformMove2(BOUNDACTION action)
                 pt.y = (float)jupiPhyRectFocusBound.bottom;
             setPos(pt);
             break;
+        }
 
-        case BA_REBOUND:
+        case BA_REBOUND: {
             if (pt.x >= jupiPhyRectFocusBound.right || pt.x <= jupiPhyRectFocusBound.left)
                 jupiPhyPtVelo.x =- jupiPhyPtVelo.x;
             else if (pt.y >= jupiPhyRectFocusBound.bottom || pt.y <= jupiPhyRectFocusBound.top)
                 jupiPhyPtVelo.y =- jupiPhyPtVelo.y;
             setVelo(jupiPhyPtVelo);
             break;
+        }
 
-        case BA_CLEAR:
+        case BA_CLEAR: {
             setVisible(false);
             break;
+        }
     }
 }
 
@@ -418,18 +428,20 @@ bool JupiterPhysics::collision(JupiterPhysics* ph, BOUNDACTION action,
         Point pt1, pt2;
 
         switch (action) {
-            case BA_STOP:   // Stop move.
+            case BA_STOP: {   // Stop move.
                 setMoveState(false);
                 ph->setMoveState(false);
                 break;
+            }
 
-            case BA_CLEAR:  // Clear object.
+            case BA_CLEAR: { // Clear object.
                 // Set invisibility to false.
                 setVisible(false);
                 ph->setVisible(false);
                 break;
+            }
 
-            case BA_REBOUND:    // Bounce.
+            case BA_REBOUND: {   // Bounce.
                 // Modify speed.
                 if (getVelo().x * ph->getVelo().x>=0) {
                     pt1.x = getVelo().x;
@@ -452,13 +464,14 @@ bool JupiterPhysics::collision(JupiterPhysics* ph, BOUNDACTION action,
                     pt2 = getVelo();
                     pt1 = ph->getVelo();
                 }
+
                 setVelo(pt1);
                 ph->setVelo(pt2);
                 break;
+           }
         }
         return true;
-    }
-    else
+    } else
         return false;
 }
 

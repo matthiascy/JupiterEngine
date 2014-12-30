@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -28,20 +29,20 @@
 using std::vector;
 
 class JupiterSpriteManage {
-private:
-    vector<JupiterSprite*> jupiSprites;
-
 public:
 
     JupiterSpriteManage();
     ~JupiterSpriteManage();
     bool addSprite(JupiterSprite* pSprite, int nZorder=0);
-    void release(bool bdelSprite = false);
-    void delSprite(JupiterSprite* pSprite, bool bdelSprite = false, bool bCompress = false);
+    void release(bool delSprite = false);
+    void delSprite(JupiterSprite* pSprite, bool delSprite = false, bool bCompress = false);
     void setSpriteVisible(JupiterSprite* pSprite, bool bVisible);
     bool findSprite(JupiterSprite* pSprite);
-    void draw(HDC hDC);	
-    void setZOrder(JupiterSprite* pSprite, int nZorder);	
+    void draw(HDC hDC);
+    void setZOrder(JupiterSprite* pSprite, int nZorder);
+
+private:
+    vector<JupiterSprite*> jupiSprites;
 };
 
 #endif // __JUPITER_SPRITE_MANAGE_H__

@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -123,15 +124,15 @@ void JupiterMusic::volumeUp() //  /
 bool JupiterMusic::open(LPTSTR szMusicPath)
 {
 
-    if(strlen(szMusicPath) == 0)
+    if (strlen(szMusicPath) == 0)
         return false;
 
-    if(getPlayState() || getStopState()) // If there is a music file open,
+    if (getPlayState() || getStopState()) // If there is a music file open,
         close();                         // close it.
 
     char szCommand[50];
     sprintf(szCommand, "open %s ALIAS MUSIC%d", szMusicPath, jupiMscID);
-    if(!mciSendString(szCommand, NULL, 0, 0)) { // Open music file.
+    if (!mciSendString(szCommand, NULL, 0, 0)) { // Open music file.
         return true;
     }
     return false;
@@ -141,9 +142,9 @@ bool JupiterMusic::close()
 {
     char szCommand[50];
 
-    if(getOpenState()) {
+    if (getOpenState()) {
         sprintf(szCommand,"close MUSIC%d", jupiMscID);
-        if(!mciSendString(szCommand, NULL, 0, 0)) {
+        if (!mciSendString(szCommand, NULL, 0, 0)) {
             return true;				
         }
     }
@@ -155,13 +156,13 @@ bool JupiterMusic::play(int nVolume/* = 300*/, bool bRepeat/* = false*/,
 {
     char szCommand[50];	
     // Only when music is stop or request restart
-    if(getStopState() || bReStart) {
-        if(bRepeat)
+    if (getStopState() || bReStart) {
+        if (bRepeat)
             sprintf(szCommand, "play MUSIC%d FROM 0  repeat", jupiMscID);
         else
             sprintf(szCommand, "play MUSIC%d FROM 0", jupiMscID);
 
-        if(!mciSendString(szCommand, NULL, 0, 0)) {
+        if (!mciSendString(szCommand, NULL, 0, 0)) {
             setVolume(nVolume);				
             return true;
         }
@@ -173,9 +174,9 @@ bool JupiterMusic::play(int nVolume/* = 300*/, bool bRepeat/* = false*/,
 bool JupiterMusic::stop()
 {
     char szCommand[50];
-    if(getPlayState()) {
+    if (getPlayState()) {
         sprintf(szCommand, "stop MUSIC%d", jupiMscID);
-        if(!mciSendString(szCommand, NULL, 0, 0)) {
+        if (!mciSendString(szCommand, NULL, 0, 0)) {
             return true;
         }
     }		

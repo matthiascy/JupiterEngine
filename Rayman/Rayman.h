@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -43,6 +44,7 @@ JupiterSpriteManage kSprManage;		// SpriteManage object.
 int kSceneNo;				// Scene number.
 bool kIsInitScene;			// Whether scene is initialized.
 
+void sceneSwitch();
 bool initScene1(HWND hWnd);	// Init scene 1
 bool playScene1(HWND hWnd);	// Play scene 1
 
@@ -60,9 +62,10 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType);
 
 // Used to make blast effect.
 class JupiterBlast {
-protected:
+/*protected:*/
+public:
 	long jupiBlastEndTime;	// End time.
-        bool jupiBlastFree;		// Free?
+    bool jupiBlastFree;		// Free?
 	JupiterSprite* jupiBlastSprite;	// Blast animation.
 
 public:
@@ -72,30 +75,31 @@ public:
 		jupiBlastEndTime = 0;
 		jupiBlastFree = true;	
 	};
+
 	~JupiterBlast(){};
 
-        // Set animation, spr is blas.gif, rJupiterBlast - where to display.
+        // Set animation, spr is blas.gif, rectJupiterBlast - where to display.
         // nDelay -- display time.
-	void set(JupiterSprite* spr, RECT rJupiterBlast, long nDelay)
+	void set(JupiterSprite* spr, RECT rectJupiterBlast, long nDelay)
 	{
 		jupiBlastSprite = spr;
 		jupiBlastEndTime = timeGetTime() + nDelay;
-		jupiBlastSprite->setDrawCxImageInfo(rJupiterBlast.left-50,
-                    rJupiterBlast.top-50, 100, 100);
+		jupiBlastSprite->setDrawCxImageInfo(rectJupiterBlast.left-50,
+                    rectJupiterBlast.top-50, 100, 100);
 		jupiBlastSprite->setVisible(true);
 		jupiBlastFree = false;
 	};
 
 	bool play()	// Play animation.
 	{
-            if(!jupiBlastFree && (jupiBlastEndTime <= timeGetTime())) {
-		jupiBlastSprite->setVisible(false);
-		jupiBlastSprite = NULL;
-		jupiBlastEndTime = 0;
-		jupiBlastFree = true;
-		return true;
+        if (!jupiBlastFree && (jupiBlastEndTime <= timeGetTime())) {
+		    jupiBlastSprite->setVisible(false);
+		    jupiBlastSprite = NULL;
+		    jupiBlastEndTime = 0;
+		    jupiBlastFree = true;
+		    return true;
 	    } else {
-		return false;
+		    return false;
 	    }
 	}
 
@@ -116,5 +120,5 @@ bool kShotFighter;		// Crashed by enemy?
 
 int kResult;			// Score.
 JupiterSprite* kSprGameOver;	// Game over.
-JupiterBlast* kBlastLoadScene;
+JupiterBlast kBlastLoadScene;
 JupiterSprite* kSprLoadScene;		// Loading scene.

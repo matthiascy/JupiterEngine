@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT.
  *
  *        _______
  *       /\      \                 __     __
@@ -40,54 +41,7 @@ enum DRAWTYPE {
     DT_ANIMA = 5, DT_RECT = 6, DT_CXIMAGE = 7	
 };
 
-class JupiterSprite
-{
-protected:
-    // Statistics every sprite you added, signs each one a unique id.
-    static int jupiterSpriteID;
-    // Current sprite id.
-    int spriteID;
-    // Handle of the bitmap that sprite holds.
-    HBITMAP spriteBmp;
-    // Sprite's bitmap width, height, and the Z order.
-    int	spriteWidth, spriteHeight;
-    // Decides which layer the sprite in.
-    int	spriteZOrder;
-    // Frame width and height that consists animation in a sprite bitmap.
-    int	spriteFrameWidth, spriteFrameHeight;
-    // Frame count.
-    int	spriteRowCount, spriteColCount;
-    // Current sprite frame row and col, same function with i, j in a for loop.
-    int spriteRow, spriteCol;
-    // Each animation frame delay.
-    int	sprFrameDelay;
-    // Time to draw next frame.
-    unsigned long sprNextFrameTime;
-    // Indicates whether the animation is initialized or not.
-    bool isInitAni;
-    // Indicates whether the animation is finished.
-    bool isFiniAni;
-
-    
-    // Attributes used to manage sprites.
-    DRAWTYPE spriteType;    // Sprite's drawing type.
-    int	spriteX, spriteY;   // Position to draw sprite.
-    bool spriteTrans;       // Transparent or not.
-    COLORREF spriteTransCr; // Color used to transparent sprite.
-    int	spriteAlpha;        // Sprite opacity.
-
-    // Variables used by drawTransAlpha() method, background's left-top 
-    // position and it's width, height
-    int	spriteBackX, spriteBackY, spriteBackWidth, spriteBackHeight;
-
-    // Variables used by drawRect() method, rectangle rigion's left-top 
-    // position and it's width, height
-    int	spriteRectX, spriteRectY, spriteRectWidth, spriteRectHeight;
-    bool spriteVisible; //Sprite is visible or not.
-
-
-    CxImage* spriteCXImage;    // Point to CxImage object.
-
+class JupiterSprite {
 public:
     JupiterSprite();
     // According bitmap file name to create sprite.
@@ -239,20 +193,65 @@ public:
     void setIsFiniAni();
     void setNextFrameTime(int n) {sprNextFrameTime += n;};
 
+protected:
+    // Statistics every sprite you added, signs each one a unique id.
+    static int jupiterSpriteID;
+    // Current sprite id.
+    int spriteID;
+    // Handle of the bitmap that sprite holds.
+    HBITMAP spriteBmp;
+    // Sprite's bitmap width, height, and the Z order.
+    int	spriteWidth, spriteHeight;
+    // Decides which layer the sprite in.
+    int	spriteZOrder;
+    // Frame width and height that consists animation in a sprite bitmap.
+    int	spriteFrameWidth, spriteFrameHeight;
+    // Frame count.
+    int	spriteRowCount, spriteColCount;
+    // Current sprite frame row and col, same function with i, j in a for loop.
+    int spriteRow, spriteCol;
+    // Each animation frame delay.
+    int	sprFrameDelay;
+    // Time to draw next frame.
+    unsigned long sprNextFrameTime;
+    // Indicates whether the animation is initialized or not.
+    bool isInitAni;
+    // Indicates whether the animation is finished.
+    bool isFiniAni;
+
+
+    // Attributes used to manage sprites.
+    DRAWTYPE spriteType;    // Sprite's drawing type.
+    int	spriteX, spriteY;   // Position to draw sprite.
+    bool spriteTrans;       // Transparent or not.
+    COLORREF spriteTransCr; // Color used to transparent sprite.
+    int	spriteAlpha;        // Sprite opacity.
+
+    // Variables used by drawTransAlpha() method, background's left-top 
+    // position and it's width, height
+    int	spriteBackX, spriteBackY, spriteBackWidth, spriteBackHeight;
+
+    // Variables used by drawRect() method, rectangle rigion's left-top 
+    // position and it's width, height
+    int	spriteRectX, spriteRectY, spriteRectWidth, spriteRectHeight;
+    bool spriteVisible; //Sprite is visible or not.
+
+
+    CxImage* spriteCXImage;    // Point to CxImage object.
+
 private:
     // Method to draw transparent bitmap, DIY, :)
-    void transBitmap( HDC hdcDest,      // Destination DC
-        int nXDest,			// Destination left-top corner
-        int nYDest,	
-        int nWidthDest,                 // Destination width.
-        int nHeightDest,                // Destination height.
-        HDC hdcSrc,                     // Source DC.
-        int nXSrc,			// Source origin point.
-        int nYSrc,
-        int nWidthSrc,                  // Source width.
-        int nHeightSrc,                 // Source height.
-        COLORREF crTrans = RGB(255,255,255)
-        );
+    void transBitmap(HDC hdcDest,      // Destination DC
+                     int nXDest,			// Destination left-top corner
+                     int nYDest,	
+                     int nWidthDest,                 // Destination width.
+                     int nHeightDest,                // Destination height.
+                     HDC hdcSrc,                     // Source DC.
+                     int nXSrc,			// Source origin point.
+                     int nYSrc,
+                     int nWidthSrc,                  // Source width.
+                     int nHeightSrc,                 // Source height.
+                     COLORREF crTrans = RGB(255,255,255));
 
 };
 

@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -40,7 +41,7 @@ Jupiter::Jupiter(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle,
     jupiInst = hInstance;
 
     lstrcpy(jupiWndCls, szWindowClass);
-    lstrcpy(m_szTitle, szTitle);
+    lstrcpy(jupiTitle, szTitle);
 
     jupiFullScreen = bFullScreen;			
     jupiColorbit = nColorbit;
@@ -88,21 +89,21 @@ bool Jupiter::createGameWindow()
 
     EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &DevMode);
 
-    bool bDisplayChange = false;
+    bool isDisplayChange = false;
 
-    if(DevMode.dmBitsPerPel != (unsigned long)jupiColorbit) {
+    if (DevMode.dmBitsPerPel != (unsigned long)jupiColorbit) {
         DevMode.dmBitsPerPel = jupiColorbit;
-        bDisplayChange = true;
+        isDisplayChange = true;
     }
 
-    if((jupiFullScreen && jupiWndWidth != GetSystemMetrics(SM_CXSCREEN))	
+    if ((jupiFullScreen && jupiWndWidth != GetSystemMetrics(SM_CXSCREEN))	
         || jupiWndWidth > GetSystemMetrics(SM_CXSCREEN)) {
             DevMode.dmPelsWidth = jupiWndWidth;
             DevMode.dmPelsHeight = jupiWndHeight;
-            bDisplayChange = true;		
+            isDisplayChange = true;		
     }
 
-    if(bDisplayChange) {
+    if (isDisplayChange) {
         LONG result = ChangeDisplaySettings(&DevMode, 0);
         if(result == DISP_CHANGE_SUCCESSFUL) {
             ChangeDisplaySettings(&DevMode, CDS_FULLSCREEN);
@@ -112,7 +113,7 @@ bool Jupiter::createGameWindow()
         }
     }
 
-    if(jupiFullScreen) {
+    if (jupiFullScreen) {
         nPosX=0;
         nPosY=0;
         dwWinStyle = WS_POPUP;
@@ -128,10 +129,10 @@ bool Jupiter::createGameWindow()
         dwWinStyle = WS_SYSMENU | WS_CAPTION;		
     }
 
-    hWnd = CreateWindow(jupiWndCls, m_szTitle, dwWinStyle, nPosX, nPosY,
+    hWnd = CreateWindow(jupiWndCls, jupiTitle, dwWinStyle, nPosX, nPosY,
         nWndWidth, nWndHeight, NULL, NULL, jupiInst, NULL);		
 
-    if(!hWnd)
+    if (!hWnd)
         return false;
     ShowWindow(hWnd, SW_SHOWNORMAL);
     UpdateWindow(hWnd);
@@ -144,11 +145,11 @@ int WINAPI WinMain(HINSTANCE hInstance,	HINSTANCE hPrevInstance,
 {
     MSG msg;
 
-    if(!gameInitialize(hInstance))			
+    if (!gameInitialize(hInstance))			
         return false;
 
-    while(true) {
-        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+    while (true) {
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             if(msg.message == WM_QUIT)
                 break;
             TranslateMessage(&msg);
@@ -174,12 +175,13 @@ int WINAPI WinMain(HINSTANCE hInstance,	HINSTANCE hPrevInstance,
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {	
     switch (message) {
-        case WM_CREATE:	
+        case WM_CREATE: {
             Jupiter::getJupiter()->setWindow(hWnd);
             gameStart(hWnd);
             break;
+        }
 
-        case WM_PAINT:
+        case WM_PAINT: {
             HDC hDC;
             HDC hMemDC;
             HBITMAP hbmMem, hbmOld;
@@ -188,60 +190,71 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             hMemDC = CreateCompatibleDC(hDC);
             hbmMem = CreateCompatibleBitmap(hDC, Jupiter::getJupiter()->getWidth(), 
-                Jupiter::getJupiter()->getHeight());
+                                            Jupiter::getJupiter()->getHeight());
             hbmOld = (HBITMAP)SelectObject(hMemDC, hbmMem);
             gamePaint(hMemDC);
-            BitBlt(hDC, 0, 0, Jupiter::getJupiter()->getWidth(), 
-                Jupiter::getJupiter()->getHeight(), hMemDC, 0, 0, SRCCOPY);
+            BitBlt(hDC, 0, 0, Jupiter::getJupiter()->getWidth(),
+                   Jupiter::getJupiter()->getHeight(), hMemDC, 0, 0, SRCCOPY);
     
             SelectObject(hMemDC, hbmOld);
             DeleteObject(hbmMem);
             DeleteDC(hMemDC);
             EndPaint(hWnd, &ps);
             break;
+        }
 
-        case WM_LBUTTONDOWN:
+        case WM_LBUTTONDOWN: {
             mouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam), wParam);
             break;
+        }
 
-        case WM_LBUTTONUP:
+        case WM_LBUTTONUP: {
             mouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam), wParam);
             break;
+        }
 
-        case WM_LBUTTONDBLCLK:
+        case WM_LBUTTONDBLCLK: {
             mouseDoubleClick(hWnd, LOWORD(lParam), HIWORD(lParam), wParam);
             break;
+        }
 
-        case WM_RBUTTONDOWN:
+        case WM_RBUTTONDOWN: {
             mouseRButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam), wParam);
             break;
+        }
 
-        case WM_MOUSEMOVE:
+        case WM_MOUSEMOVE: {
             mouseMove(hWnd, LOWORD(lParam), HIWORD(lParam), wParam);
             break;
+        }
 
-        case WM_SETFOCUS:
+        case WM_SETFOCUS: {
             gameActive(hWnd);
             Jupiter::getJupiter()->setPause(false);
             break;
+        }
 
-        case WM_KILLFOCUS:
+        case WM_KILLFOCUS: {
             gamePause(hWnd);
             Jupiter::getJupiter()->setPause(true);
             break;
+        }
 
-        case WM_CLOSE:
+        case WM_CLOSE: {
             if (gameWindowClose(hWnd))
                 DestroyWindow(hWnd);
             break;
+        }
 
-        case WM_DESTROY:
+        case WM_DESTROY: {
             gameEnd();
             PostQuitMessage(0);
             break;
+        }
 
-        default:
+        default: {
             return DefWindowProc(hWnd, message, wParam, lParam);
+        }
     }
     return false;
 }

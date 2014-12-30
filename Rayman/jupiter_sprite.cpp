@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -90,12 +91,12 @@ void JupiterSprite::release()
 
 void JupiterSprite::setBitmap(HBITMAP hbm)
 {
-    if(spriteBmp != NULL)
+    if (spriteBmp != NULL)
         release();
 
     spriteBmp = hbm;
 
-    BITMAP  bm;
+    BITMAP bm;
     GetObject(spriteBmp, sizeof(BITMAP), &bm);
     spriteWidth = bm.bmWidth;
     spriteHeight = bm.bmHeight;
@@ -135,8 +136,8 @@ bool JupiterSprite::load(HINSTANCE hInstance, LPTSTR szFileName)
 {
     release();
     spriteBmp = (HBITMAP)LoadImage(NULL, szFileName, IMAGE_BITMAP, 0, 0, 
-        LR_LOADFROMFILE);
-    BITMAP  bm;
+                                   LR_LOADFROMFILE);
+    BITMAP bm;
     GetObject(spriteBmp, sizeof(BITMAP), &bm);
     spriteWidth = bm.bmWidth;
     spriteHeight = bm.bmHeight;
@@ -147,8 +148,8 @@ bool JupiterSprite::load(HINSTANCE hInstance, UINT uRcid)
 {
     release();
     spriteBmp = (HBITMAP)LoadImage(hInstance, MAKEINTRESOURCE(uRcid), 
-        IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE);	
-    BITMAP  bm;
+                                   IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE);	
+    BITMAP bm;
     GetObject(spriteBmp, sizeof(BITMAP), &bm);
     spriteWidth = bm.bmWidth;
     spriteHeight = bm.bmHeight;
@@ -167,7 +168,7 @@ void JupiterSprite::draw(HDC hDC, int x, int y, bool bTrans/* = false*/,
 
         if (bTrans)
             TransparentBlt(hDC, x, y, spriteWidth, spriteHeight, hdcMem, 0 ,0,
-                spriteWidth, spriteHeight, crTrans);
+                           spriteWidth, spriteHeight, crTrans);
         else
             BitBlt(hDC, x, y, spriteWidth, spriteHeight, hdcMem, 0, 0, SRCCOPY);
 
@@ -183,7 +184,7 @@ void JupiterSprite::drawRect(HDC hDC, int x, int y, int nRectX, int nRectY,
                              bool bTrans/* = false*/, 
                              COLORREF crTrans/* = RGB(0,0,0)*/)
 {
-    if(!spriteVisible)
+    if (!spriteVisible)
         return;
     if (spriteBmp != NULL) {
         HDC hdcMem = CreateCompatibleDC(hDC);
@@ -191,7 +192,7 @@ void JupiterSprite::drawRect(HDC hDC, int x, int y, int nRectX, int nRectY,
 
         if (bTrans)
             TransparentBlt(hDC, x, y, nRectWidth, nRectHeight, hdcMem, 
-                nRectX, nRectY, nRectWidth, nRectHeight, crTrans);
+                           nRectX, nRectY, nRectWidth, nRectHeight, crTrans);
         else
             BitBlt(hDC, x, y, nRectWidth, nRectHeight, hdcMem, 0, 0, SRCCOPY);
 
@@ -202,10 +203,9 @@ void JupiterSprite::drawRect(HDC hDC, int x, int y, int nRectX, int nRectY,
 
 void JupiterSprite::drawAlpha(HDC hDC, int x, int y, int nAlpha)
 {
-    if(!spriteVisible)
+    if (!spriteVisible)
         return;
-    if (spriteBmp != NULL)
-    {
+    if (spriteBmp != NULL) {
         HDC hdcMem = CreateCompatibleDC(hDC);
         HBITMAP hOldBmp = (HBITMAP)SelectObject(hdcMem, spriteBmp);
 
@@ -215,7 +215,7 @@ void JupiterSprite::drawAlpha(HDC hDC, int x, int y, int nAlpha)
         bf.SourceConstantAlpha = nAlpha;
         bf.AlphaFormat = 0x00;
         AlphaBlend(hDC, x, y, spriteWidth, spriteHeight, hdcMem, 0, 0, 
-            getWidth(), getHeight(), bf);
+                   getWidth(), getHeight(), bf);
 
         SelectObject(hdcMem,hOldBmp);	
         DeleteDC(hdcMem);			
@@ -228,7 +228,7 @@ void JupiterSprite::drawTransAlpha(HDC hdcBack, int nXBack, int nBackY,
                                    int nAlpha/* = 100*/, 
                                    COLORREF crTrans/* = RGB(0, 0, 0)*/)
 {
-    if(!spriteVisible)
+    if (!spriteVisible)
         return;
     if (spriteBmp != NULL && nAlpha >0) {
         HDC hdcMem= CreateCompatibleDC(hdcBack);
@@ -244,7 +244,7 @@ void JupiterSprite::drawTransAlpha(HDC hdcBack, int nXBack, int nBackY,
         RECT rTransRect, rTransRect2;
  
         // Get for/background rectangle, if doesn't intersect, don't calculate color
-        if(IntersectRect(&rTransRect,&rBackRect, &rForeRect)) {
+        if (IntersectRect(&rTransRect,&rBackRect, &rForeRect)) {
             BITMAP  bm, bmBk;	
             GetObject(spriteBmp, sizeof(BITMAP),&bm);
             BYTE * px = new unsigned char[bm.bmHeight*bm.bmWidthBytes];
@@ -255,7 +255,7 @@ void JupiterSprite::drawTransAlpha(HDC hdcBack, int nXBack, int nBackY,
 
             GetBitmapBits(hbmBk, bmBk.bmHeight*bmBk.bmWidthBytes, pxBk);
 
-            rTransRect2=rTransRect;
+            rTransRect2 = rTransRect;
             OffsetRect (&rTransRect2, -rForeRect.left, -rForeRect.top );
 
             int pb = bm.bmBitsPixel / 8;	// Get pixel size
@@ -263,16 +263,16 @@ void JupiterSprite::drawTransAlpha(HDC hdcBack, int nXBack, int nBackY,
 
             //dy1 - background pixel column, dy2 - foreground pixel row
             //dx1 - background pixel row, dx2 - foreground pixel column
-            int dx1,dx2,dy1,dy2;	
-            for(dy1 = rTransRect.top, dy2 = rTransRect2.top; 
+            int dx1, dx2, dy1, dy2;	
+            for (dy1 = rTransRect.top, dy2 = rTransRect2.top; 
                     dy1 < rTransRect.bottom; dy1++, dy2++) {
-                for(dx1 = rTransRect.left, dx2 = rTransRect2.left; 
+                for (dx1 = rTransRect.left, dx2 = rTransRect2.left; 
                     dx1 < rTransRect.right; dx1++, dx2++) {
                         // Calculate fore/background init pixel position
                         int nBackRGB_B = dy1*bmBk.bmWidthBytes + dx1*pbBk;
                         int nForeRGB_B = dy2*bm.bmWidthBytes + dx2*pb;
 
-                        if( RGB(px[nForeRGB_B+2], px[nForeRGB_B+1], 
+                        if (RGB(px[nForeRGB_B+2], px[nForeRGB_B+1], 
                             px[nForeRGB_B])!=crTrans) {
                             // RGB_B * nAlpha + px
                             pxBk[nBackRGB_B] = (px[nForeRGB_B]*nAlpha+pxBk[nBackRGB_B]*(255-nAlpha))/255;
@@ -301,7 +301,7 @@ void JupiterSprite::drawTransAlpha(HDC hdcBack, int nXBack, int nBackY,
 void JupiterSprite::drawGray(HDC hDC, int x, int y, bool bTrans/* = false*/, 
                              COLORREF crTrans/* = RGB(0,0,0)*/)
 {
-    if(!spriteVisible)
+    if (!spriteVisible)
         return;
     if (spriteBmp != NULL) {
         HDC hdcMem= CreateCompatibleDC(hDC);
@@ -311,12 +311,12 @@ void JupiterSprite::drawGray(HDC hDC, int x, int y, bool bTrans/* = false*/,
         // Temporary store array.
         BYTE* px = new unsigned char[bm.bmHeight*bm.bmWidthBytes];
         // Get source bitmap each pixel's RGB values and stores in px;
-        GetBitmapBits(spriteBmp,bm.bmHeight*bm.bmWidthBytes,px);
+        GetBitmapBits(spriteBmp, bm.bmHeight*bm.bmWidthBytes, px);
 
         int pb = bm.bmBitsPixel / 8;
         // Calculate gray value.
-        for(int dy = 0; dy < bm.bmHeight; dy++) {
-            for(int dx = 0; dx < bm.bmWidth; dx++) {
+        for (int dy = 0; dy < bm.bmHeight; dy++) {
+            for (int dx = 0; dx < bm.bmWidth; dx++) {
                 int rgb_b = dy*bm.bmWidthBytes + dx*pb;	
                 px[rgb_b] = (px[rgb_b]*299 + px[rgb_b+1]*587 + px[rgb_b+2]*114)/1000;
                 px[rgb_b + 1] = px[rgb_b] ;
@@ -327,11 +327,11 @@ void JupiterSprite::drawGray(HDC hDC, int x, int y, bool bTrans/* = false*/,
         HBITMAP	hbmTmp = CreateCompatibleBitmap(hDC, bm.bmWidth, bm.bmHeight); 	
         SetBitmapBits(hbmTmp, bm.bmHeight*bm.bmWidthBytes, px);
 
-        HBITMAP hOldBmp =( HBITMAP)SelectObject(hdcMem, hbmTmp); 
+        HBITMAP hOldBmp = (HBITMAP)SelectObject(hdcMem, hbmTmp); 
 
         if (bTrans)
             TransparentBlt(hDC, x, y, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0,
-                bm.bmWidth, bm.bmHeight, crTrans);
+                           bm.bmWidth, bm.bmHeight, crTrans);
         else
             BitBlt(hDC, x, y, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
 
@@ -365,7 +365,7 @@ void JupiterSprite::transBitmap( HDC hdcDest, int nXDest, int nYDest,
         BitBlt(hdcMem, 0, 0, nWidthDest, nHeightDest, hdcSrc, nXSrc, nYSrc, SRCCOPY);
     else
         StretchBlt(hdcMem, 0, 0, nWidthDest, nHeightDest, 
-        hdcSrc, nXSrc, nYSrc, nWidthSrc, nHeightSrc, SRCCOPY);
+                   hdcSrc, nXSrc, nYSrc, nWidthSrc, nHeightSrc, SRCCOPY);
 
     // Set transparent color.
     SetBkColor(hdcMem, crTrans);
@@ -379,8 +379,8 @@ void JupiterSprite::transBitmap( HDC hdcDest, int nXDest, int nYDest,
     BitBlt(hdcMem, 0, 0, nWidthDest, nHeightDest, hdcMask, 0, 0, SRCAND);
 
     // Background correspondent to transparent part unchanged, other is black.
-    SetBkColor(hdcDest,RGB(255,255,255));
-    SetTextColor(hdcDest,RGB(0,0,0));
+    SetBkColor(hdcDest, RGB(255,255,255));
+    SetTextColor(hdcDest, RGB(0,0,0));
     BitBlt(hdcDest, nXDest, nYDest, nWidthDest, nHeightDest, hdcMask, 0, 0, SRCAND);
 
     // OR 
@@ -396,8 +396,8 @@ void JupiterSprite::transBitmap( HDC hdcDest, int nXDest, int nYDest,
 
 void JupiterSprite::initAni(int nRowCount, int nColCount, int nFrameDelay)
 {
-    if (spriteBmp == NULL )
-        return;
+    if (spriteBmp == NULL ) return;
+
     spriteRowCount = nRowCount; // Row number.
     spriteColCount = nColCount;	// Column number.
 
@@ -409,22 +409,22 @@ void JupiterSprite::initAni(int nRowCount, int nColCount, int nFrameDelay)
     spriteCol = 0;
     spriteRow = 0;
 
-    isInitAni=true; // Initialized.
+    isInitAni = true; // Initialized.
 }
 
 void JupiterSprite::drawAni(HDC hDC, int x, int y, bool bTrans/* = false*/,
                             COLORREF crTrans/* = RGB(0, 0, 0)*/)
 {
-    if(!spriteVisible)
+    if (!spriteVisible)
         return;
-    if(spriteBmp == NULL || !isInitAni)
+    if (spriteBmp == NULL || !isInitAni)
         return;
-    if(timeGetTime()>sprNextFrameTime)	// Next frame time?
-    {	// Yes, reset next frame time.
-        sprNextFrameTime = timeGetTime()+sprFrameDelay;	
+    if (timeGetTime() > sprNextFrameTime)	{ // Next frame time?
+    	// Yes, reset next frame time.
+        sprNextFrameTime = timeGetTime() + sprFrameDelay;	
 
         spriteCol++;						
-        if(spriteCol >= spriteColCount)	
+        if (spriteCol >= spriteColCount)	
             spriteCol = 0;
     }
     drawRowCol(hDC, x, y, spriteRow, spriteCol, bTrans, crTrans);
@@ -434,7 +434,7 @@ void JupiterSprite::drawRowCol(HDC hDC, int x, int y, int nRow, int nCol,
                                bool bTrans/* = false*/,
                                COLORREF crTrans/* = RGB(0, 0, 0)*/)
 {
-    if(!spriteVisible)
+    if (!spriteVisible)
         return;
     if (spriteBmp == NULL || !isInitAni)
         return;
@@ -443,11 +443,11 @@ void JupiterSprite::drawRowCol(HDC hDC, int x, int y, int nRow, int nCol,
 
     if (bTrans)
         TransparentBlt(hDC, x, y,spriteFrameWidth, spriteFrameHeight, hdcMem,
-            spriteFrameWidth*nCol, spriteFrameHeight*nRow, spriteFrameWidth,
-            spriteFrameHeight, crTrans);
+                       spriteFrameWidth*nCol, spriteFrameHeight*nRow, 
+                       spriteFrameWidth, spriteFrameHeight, crTrans);
     else		
         BitBlt(hDC, x, y,spriteFrameWidth, spriteFrameHeight, hdcMem,
-            spriteFrameWidth*nCol, spriteFrameHeight*nRow, SRCCOPY);
+               spriteFrameWidth*nCol, spriteFrameHeight*nRow, SRCCOPY);
 
     SelectObject(hdcMem,hbmOld);
     DeleteObject(hbmOld);
@@ -531,38 +531,49 @@ void JupiterSprite::drawSprite(HDC hDC)
     if(!spriteVisible)
         return;
     switch(spriteType) {
-        case DT_draw:
+        case DT_draw: {
             draw(hDC, spriteX, spriteY, spriteTrans, spriteTransCr);
             break;
+        }
 
-        case DT_ALPHA:
+        case DT_ALPHA: {
             drawAlpha(hDC, spriteX, spriteY, spriteAlpha);
             break;
+        }
 
-        case DT_GRAY:
+        case DT_GRAY: {
             drawGray(hDC, spriteX, spriteY, spriteTrans, spriteTransCr);
             break;
+        }
 
-        case DT_TRANSALPHA:
+        case DT_TRANSALPHA: {
             drawTransAlpha(hDC, spriteBackX, spriteBackY, spriteBackWidth,
-                spriteBackHeight, spriteX, spriteY, spriteAlpha, spriteTransCr);
+                           spriteBackHeight, spriteX, spriteY, spriteAlpha,
+                           spriteTransCr);
             break;
+        }
 
-        case DT_ANIMA:
+        case DT_ANIMA: {
             drawAni(hDC,spriteX, spriteY, spriteTrans, spriteTransCr);
             break;
+        }
 
-        case DT_RECT:
+        case DT_RECT: {
             drawRect(hDC, spriteX, spriteY, spriteRectX, spriteRectY,
-                spriteRectWidth, spriteRectHeight, spriteTrans, spriteTransCr);
+                     spriteRectWidth, spriteRectHeight, spriteTrans,
+                     spriteTransCr);
             break;
+        }
 
-        case DT_CXIMAGE:
+        case DT_CXIMAGE: {
             drawCxImage(hDC, spriteX, spriteY, spriteWidth, spriteHeight,
-                sprFrameDelay);
-
-        default:
+                        sprFrameDelay);
             break;
+        }
+
+        default: {
+            break;
+        }
     }
 }
 
@@ -606,16 +617,12 @@ void JupiterSprite::drawCxImage(HDC hDC, int x, int y,
                                 int nWidth/* = 0*/, int nHeight/* = 0*/,
                                 int nFrameDelay/* = 100*/)
 {
-    if(spriteCXImage == NULL)
+    if (spriteCXImage == NULL)
         return;
 
     int ImgType = spriteCXImage->GetType();   // Get image type.
     // Steps to draw gif animation.
-<<<<<<< HEAD
-=======
-    /*下面是绘制GIF动画所需步骤*/
->>>>>>> brmer
-    if(ImgType == CXIMAGE_FORMAT_GIF) {  // GIF?
+    if (ImgType == CXIMAGE_FORMAT_GIF) {  // GIF?
         if (timeGetTime() >= sprNextFrameTime) {	// Next frame?
             sprNextFrameTime = timeGetTime() + nFrameDelay; // Set next frame time.
 
@@ -634,7 +641,8 @@ void JupiterSprite::drawCxImage(HDC hDC, int x, int y,
 }
 
 void JupiterSprite::setDrawCxImageInfo(int x, int y,
-                                       int nWidth/* = 0*/, int nHeight/* = 0*/,
+                                       int nWidth/* = 0*/,
+                                       int nHeight/* = 0*/,
                                        int nFrameDelay/* = 100*/)
 {
     spriteType = DT_CXIMAGE;

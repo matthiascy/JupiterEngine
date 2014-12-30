@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *
  *        _______
  *       /\      \                 __     __
@@ -25,8 +26,7 @@
 bool gameInitialize(HINSTANCE hInstance)
 {
     kAmbiousPtr = new Jupiter(hInstance, TEXT("Rayman"), TEXT("Rayman"),
-        IDI_ICON_BIG, IDI_ICON_SMALL, 
-        false, 32, 450, 600);
+        IDI_ICON_BIG, IDI_ICON_SMALL, false, 32, 450, 600);
     if(kAmbiousPtr == NULL)
         return false;
 
@@ -47,19 +47,35 @@ void gameStart(HWND hWnd)
     long lCur = (long)LoadCursor(kAmbiousPtr->getInstance(), MAKEINTRESOURCE(IDC_CURSOR));
     SetClassLong(hWnd, GCL_HCURSOR, lCur);
 
-    kSprLoadScene = new JupiterSprite("res\\loading.gif");
+    /*kSprLoadScene = new JupiterSprite("res\\loading.gif");*/
+    kSprLoadScene = new JupiterSprite("res\\loading_2.gif");
+    kSprManage.addSprite(kSprLoadScene, 5);
 
     kSceneNo = 1;	
     kIsInitScene = false;	
 
     initScene1(hWnd);
+    sceneSwitch();
 }
 
 void gameAction(HWND hWnd)
 {
     if(kIsInitScene) {
-        playScene1(hWnd);
+        switch(kSceneNo) {
+//             case 0: {
+//                 sceneSwitch();
+//                 break;
+//             }
+            case 1: {
+                playScene1(hWnd);
+                break;
+            }
+            case 2: {
+                
+            }
+        }
     }
+
     InvalidateRect(hWnd, NULL, false);
     UpdateWindow(hWnd);
 }
@@ -108,7 +124,7 @@ bool initScene1(HWND hWnd)
 
     // Create music object and open it.
     kMscPlaneFly = new JupiterMusic("res\\music\\fly.wav");
-//    kMscBGM = new JupiterMusic("res\\bgm.mp3");
+    // kMscBGM = new JupiterMusic("res\\bgm.mp3");
     kMscBGM = new JupiterMusic("res\\music\\bgm4.mp3");
     kMscBGM->play();
 
@@ -173,6 +189,10 @@ bool initScene1(HWND hWnd)
     kSprManage.addSprite(kSprJupiterBlast, 4);
     kSprManage.addSprite(kSprGameOver, 4);
     kSprManage.addSprite(kSprBackGroundSpace, 0);
+
+    // new added, 1:00
+//     kSprLoadScene = new JupiterSprite("res\\loading.gif");
+//     kSprManage.addSprite(kSprLoadScene, 5);
 
     kSprGameOver->setDrawCxImageInfo(50, 300);
     kSprGameOver->setVisible(false);
@@ -302,8 +322,34 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
         spr->setDrawCxImageInfo(phy->getLeftTop().x, phy->getLeftTop().y);
 }
 
+
+
+void sceneSwitch()
+{
+    RECT r;
+    r.bottom = 600;
+    r.right = 450;
+    r.top = 0;
+    r.left = 0;
+    /*kBlastLoadScene.set(kSprLoadScene, r, 50);*/
+    int nDelay = 50;
+
+    kBlastLoadScene.jupiBlastSprite = kSprLoadScene;
+    kBlastLoadScene.jupiBlastEndTime = timeGetTime() + 100000;
+    kBlastLoadScene.jupiBlastSprite->setDrawCxImageInfo(0, 0, 450, 600);
+    kBlastLoadScene.jupiBlastSprite->setVisible(true);
+    kBlastLoadScene.jupiBlastFree = false;
+
+    if (!kBlastLoadScene.play()) {
+        kBlastLoadScene.jupiBlastSprite->setVisible(false);
+    }
+}
+
+
 bool playScene1(HWND hWnd)
 {	
+//     kBlastLoadScene->set(kSprLoadScene, r, 3000);
+//     kBlastLoadScene->play();
     for (int i = 0; i < 8; i++) {	// Clouds position and z order.
         // Reach bottom.
         if (kCloudPt[i].y > kAmbiousPtr->getHeight()) {
@@ -480,7 +526,7 @@ void keyEvent(HWND hWnd)
         kPhyFight->moveDirect(DI_UP);	// Move up.
         kPhyFight->checkErr(true);
         kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
-            kPhyFight->getLeftTop().y, 100, 100);
+                                     kPhyFight->getLeftTop().y, 100, 100);
         kSprThor->setCxImage(kSprThorPic[0]->load());
         kMscPlaneFly->play(300, false, false);
     } else if (GetAsyncKeyState(VK_DOWN) < 0) {
@@ -488,20 +534,20 @@ void keyEvent(HWND hWnd)
         kPhyFight->checkErr(true);		
 
         kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
-            kPhyFight->getLeftTop().y, 100, 100);
+                                     kPhyFight->getLeftTop().y, 100, 100);
         kSprThor->setCxImage(kSprThorPic[0]->load());
     } else if (GetAsyncKeyState(VK_LEFT) < 0) {
         kPhyFight->moveDirect(DI_LEFT);
         kPhyFight->checkErr(true);	
         kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x + 10,
-            kPhyFight->getLeftTop().y, 80, 100);
+                                     kPhyFight->getLeftTop().y, 80, 100);
         kSprThor->setCxImage(kSprThorPic[1]->load());
         kMscPlaneFly->play(300, false, false);
     } else if (GetAsyncKeyState(VK_RIGHT) < 0) {
         kPhyFight->moveDirect(DI_RIGHT);
         kPhyFight->checkErr(true);	
         kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x + 10,
-            kPhyFight->getLeftTop().y, 80, 100);
+                                     kPhyFight->getLeftTop().y, 80, 100);
         kSprThor->setCxImage(kSprThorPic[2]->load());
         kMscPlaneFly->play(300, false, false);	// Play fly music.
     } else if (GetAsyncKeyState(VK_PRIOR) < 0) {	// PageUp, volume up.

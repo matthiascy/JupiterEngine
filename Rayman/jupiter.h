@@ -1,5 +1,6 @@
 /*
  *      Copyright(C) 2014, Jupiter-org.
+ *      License Boilerplate: MIT
  *                                        
  *        _______
  *       /\      \                 __     __
@@ -27,24 +28,6 @@
 #include "windows.h"
 
 class Jupiter {
-protected:
-    static Jupiter* ptrJupiter;	                                                                 
-    HINSTANCE	jupiInst;
-    HWND	jupiWnd;
-    TCHAR	jupiWndCls[50];
-    TCHAR	m_szTitle[50];
-    WORD	jupiIcon;
-    WORD	jupiSmIcon;
-    int		jupiWndWidth, jupiWndHeight;
-
-    bool	jupiFullScreen;
-    int		jupiColorbit;
-
-    int		jupiFrameDelay;
-    long	jupiNextTick;
-    long	jupiStartTime;
-    bool	jupiPause;
-
 public:
     Jupiter(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle,
             WORD wIcon, WORD wSmallIcon, bool bFullScreen = false,	
@@ -64,6 +47,24 @@ public:
     long getStartTime() { return jupiStartTime; }
     void setNextGameTick(int nNextGameTick) { jupiNextTick=nNextGameTick; }
     int getNextGameTick() { return jupiNextTick; }
+
+protected:
+    static Jupiter* ptrJupiter;	                                                                 
+    HINSTANCE   jupiInst;
+    HWND	    jupiWnd;
+    TCHAR	    jupiWndCls[50];
+    TCHAR	    jupiTitle[50];
+    WORD	    jupiIcon;
+    WORD	    jupiSmIcon;
+    int		    jupiWndWidth, jupiWndHeight;
+
+    bool	    jupiFullScreen;
+    int		    jupiColorbit;
+
+    int		    jupiFrameDelay;
+    long	    jupiNextTick;
+    long	    jupiStartTime;
+    bool	    jupiPause;
 };
 
 int WINAPI WinMain(HINSTANCE hInstance,	HINSTANCE hPrevInstance,
