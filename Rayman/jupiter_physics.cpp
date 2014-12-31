@@ -25,21 +25,21 @@
 
 JupiterPhysics::JupiterPhysics()
 {
-    RECT rObject = {0, 0, 0, 0};
+    RECT object = {0, 0, 0, 0};
     RECT rBound = {0, 0, 0, 0};
-    setObject(rObject, rBound);
+    setObject(object, rBound);
 }
 
-JupiterPhysics::JupiterPhysics(RECT rObject, RECT rBound)
+JupiterPhysics::JupiterPhysics(RECT object, RECT rBound)
 {
-    setObject(rObject, rBound);
+    setObject(object, rBound);
 }
 
-JupiterPhysics::JupiterPhysics(RECT rObject, RECT rBound, Point ptFocus,
-                               Point ptVelo, Point ptAccelerate, 
-                               Point ptDes, bool bMove)
+JupiterPhysics::JupiterPhysics(RECT object, RECT rBound, Point focus,
+                               Point velo, Point accelerate, 
+                               Point dest, bool bMove)
 {
-    setObject(rObject, rBound, ptFocus, ptVelo, ptAccelerate, ptDes, bMove);
+    setObject(object, rBound, focus, velo, accelerate, dest, bMove);
 }
 
 JupiterPhysics::~JupiterPhysics()
@@ -72,9 +72,9 @@ void JupiterPhysics::setObjectRect(int left, int top, int right, int bottom)
 //        /--------------------------- \
 //       /                            Focus motion range.
 //      Object focus.
-void JupiterPhysics::setFocus(Point ptFocus)
+void JupiterPhysics::setFocus(Point focus)
 {	
-    jupiPhyPtFocus = ptFocus;
+    jupiPhyPtFocus = focus;
     jupiPhyRectFocusBound.left = (int)jupiPhyPtFocus.x + jupiPhyRectBound.left;	
     jupiPhyRectFocusBound.top = (int)jupiPhyPtFocus.y + jupiPhyRectBound.top;
     jupiPhyRectFocusBound.right = jupiPhyRectBound.right - 
@@ -178,10 +178,10 @@ void JupiterPhysics::setDes(float x, float y)
     setDes(pt);
 };
 
-void JupiterPhysics::setVelo(Point ptVelo)
+void JupiterPhysics::setVelo(Point velo)
 {
-    jupiPhyPtVelo = ptVelo;
-    jupiPhyStep = (float)hypot(ptVelo.x, ptVelo.y);
+    jupiPhyPtVelo = velo;
+    jupiPhyStep = (float)hypot(velo.x, velo.y);
 
     if ((fabs(jupiPhyPtVelo.x)) < 0.001 && (fabs(jupiPhyPtVelo.y) < 0.001))
         jupiPhyDirect = DI_STOP;
@@ -210,34 +210,34 @@ void JupiterPhysics::setAccelerate(float x, float y)
     jupiPhyPtAccelerate.y = y;
 };
 
-void JupiterPhysics::setObject(RECT rObject, RECT rBound)
+void JupiterPhysics::setObject(RECT object, RECT rBound)
 {
     Point ptPos = {
-        (float)rObject.left, 
-        (float)rObject.top
+        (float)object.left, 
+        (float)object.top
     };
-    Point ptFocus = {0, 0};
-    Point ptVelo = {0, 0};
-    Point ptAccelerate = {0, 0};
-    Point ptDes = ptPos;
-    setObject(rObject, rBound, ptFocus, ptVelo, ptAccelerate, ptDes, false);
+    Point focus = {0, 0};
+    Point velo = {0, 0};
+    Point accelerate = {0, 0};
+    Point dest = ptPos;
+    setObject(object, rBound, focus, velo, accelerate, dest, false);
     jupiPhyPathArrive = true;
 }
 
-void JupiterPhysics::setObject(RECT rObject, RECT rBound, Point ptFocus,
-                               Point ptVelo, Point ptAccelerate,
-                               Point ptDes, bool bMove)
+void JupiterPhysics::setObject(RECT object, RECT rBound, Point focus,
+                               Point velo, Point accelerate,
+                               Point dest, bool bMove)
 {
-    setObjectRect(rObject);
+    setObjectRect(object);
     setRectBound(rBound);
-    setFocus(ptFocus);
-    setPos((float)rObject.left, (float)rObject.top);
+    setFocus(focus);
+    setPos((float)object.left, (float)object.top);
     setMoveState(bMove);
     jupiPhyInitIndex = false;
     setVisible(true);
-    setDes(ptDes);
-    setVelo(ptVelo);
-    setAccelerate(ptAccelerate);
+    setDes(dest);
+    setVelo(velo);
+    setAccelerate(accelerate);
 }
 
 bool JupiterPhysics::isPointInBound(Point pt, RECT r)
@@ -250,8 +250,8 @@ bool JupiterPhysics::isPointInBound(Point pt, RECT r)
 
 void JupiterPhysics::uniformMove()
 {
-    Point ptAccelerate = {0, 0};	
-    setAccelerate(ptAccelerate);
+    Point accelerate = {0, 0};	
+    setAccelerate(accelerate);
     shiftMove();
 }
 
@@ -306,7 +306,7 @@ void JupiterPhysics::moveToDes()
     setPos(pt1);
 }
 
-void JupiterPhysics::moveAlongPath(Point* ptDesPath, int nPtCount,
+void JupiterPhysics::moveAlongPath(Point* destPath, int nPtCount,
                                    bool bCycle/* = false*/)
 {
     if (!jupiPhyInitIndex) {
@@ -316,7 +316,7 @@ void JupiterPhysics::moveAlongPath(Point* ptDesPath, int nPtCount,
 
     if (jupiPhyPathIndex < nPtCount) {
         setMoveState(true);
-        setDes(ptDesPath[jupiPhyPathIndex]);
+        setDes(destPath[jupiPhyPathIndex]);
         moveToDes();
         if(!getMoveState())
             jupiPhyPathIndex++;
@@ -333,39 +333,39 @@ void JupiterPhysics::moveAlongPath(Point* ptDesPath, int nPtCount,
 
 void JupiterPhysics::moveDirect(DIRECTION Direct)
 {
-    Point ptDes;
+    Point dest;
     switch(Direct) {
         case DI_LEFT: {
-            ptDes.x = jupiPhyPtPos.x - jupiPhyStep;
-            ptDes.y = jupiPhyPtPos.y;
+            dest.x = jupiPhyPtPos.x - jupiPhyStep;
+            dest.y = jupiPhyPtPos.y;
             break;
         }
 
         case DI_RIGHT: {
-            ptDes.x = jupiPhyPtPos.x + jupiPhyStep;
-            ptDes.y = jupiPhyPtPos.y;
+            dest.x = jupiPhyPtPos.x + jupiPhyStep;
+            dest.y = jupiPhyPtPos.y;
             break;
         }
 
         case DI_UP: {
-            ptDes.x = jupiPhyPtPos.x;
-            ptDes.y = jupiPhyPtPos.y - jupiPhyStep;
+            dest.x = jupiPhyPtPos.x;
+            dest.y = jupiPhyPtPos.y - jupiPhyStep;
             break;
         }
 
         case DI_DOWN: {
-            ptDes.x = jupiPhyPtPos.x;
-            ptDes.y = jupiPhyPtPos.y + jupiPhyStep;
+            dest.x = jupiPhyPtPos.x;
+            dest.y = jupiPhyPtPos.y + jupiPhyStep;
             break;
         }
 
         default: {
-            ptDes = jupiPhyPtPos;
+            dest = jupiPhyPtPos;
             break;
         }
     }
 
-    setPos(ptDes);
+    setPos(dest);
 }
 
 void JupiterPhysics::uniformMove2(BOUNDACTION action)
@@ -500,14 +500,14 @@ bool JupiterPhysics::checkErr(bool bRectify)
     return true;
 }
 
-void JupiterPhysics::setCheckBox(RECT rObject)
+void JupiterPhysics::setCheckBox(RECT object)
 {
     // 90% of object rectangle.
-    int w = (int)((rObject.right - rObject.left) * 0.1);
-    int h = (int)((rObject.bottom - rObject.top) * 0.1);
+    int w = (int)((object.right - object.left) * 0.1);
+    int h = (int)((object.bottom - object.top) * 0.1);
 
-    jupiPhyRectCheckBox.left = rObject.left + w;
-    jupiPhyRectCheckBox.right = rObject.right - w;
-    jupiPhyRectCheckBox.top = rObject.top + h;
-    jupiPhyRectCheckBox.bottom = rObject.bottom - h;
+    jupiPhyRectCheckBox.left = object.left + w;
+    jupiPhyRectCheckBox.right = object.right - w;
+    jupiPhyRectCheckBox.top = object.top + h;
+    jupiPhyRectCheckBox.bottom = object.bottom - h;
 }

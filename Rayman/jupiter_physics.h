@@ -69,18 +69,18 @@ public:
     JupiterPhysics();
 
     // Constructs objects with specified object rectangle and motion rectangle.
-    JupiterPhysics(RECT rObject, RECT rBound);
+    JupiterPhysics(RECT object, RECT rBound);
 
     // Constructs objects with specified arguments.
-    // @params: rObject:       Object rectangle.
+    // @params: object:       Object rectangle.
     //          rBound:        Object motion rectangle.
-    //          ptFocus:       Object focus position.
-    //          ptVelo:        Object velocity.
-    //          ptAccelerate:  Object acceleration.
-    //          ptDes:         Object destination position.
+    //          focus:       Object focus position.
+    //          velo:        Object velocity.
+    //          accelerate:  Object acceleration.
+    //          dest:         Object destination position.
     //          pMove:         Object move status.
-    JupiterPhysics(RECT rObject, RECT rBound, Point ptFocus,
-                   Point ptVelo, Point ptAccelerate, Point ptDes,
+    JupiterPhysics(RECT object, RECT rBound, Point focus,
+                   Point velo, Point accelerate, Point dest,
                    bool bMove);
 
     ~JupiterPhysics();
@@ -104,7 +104,7 @@ public:
 
     // Set object focus position(offset to left-top corner) and object
     // focus motion range.
-    void setFocus(Point ptFocus);
+    void setFocus(Point focus);
     // Overloaded setFocus(...).
     void setFocus(float x, float y);
 
@@ -153,7 +153,7 @@ public:
 
     // Set object velocity, if velocity changed, move stride(step) also will be
     // changed.
-    void setVelo(Point ptVelo);
+    void setVelo(Point velo);
     // Overloaded setVelo(...).
     void setVelo(float x, float y);
     // @return type: Point.
@@ -164,8 +164,8 @@ public:
     DIRECTION getDirect() { return jupiPhyDirect; };
 
     // Set object acceleration.
-    void setAccelerate(Point ptAccelerate) {
-        jupiPhyPtAccelerate = ptAccelerate;
+    void setAccelerate(Point accelerate) {
+        jupiPhyPtAccelerate = accelerate;
     };
     // Overloaded setAccelerate(...).
     void setAccelerate(float x, float y);
@@ -180,9 +180,9 @@ public:
     // Visible or not.
     bool getVisible() {return jupiPhyVisible; };
 
-    void setObject(RECT rObject, RECT rBound);
-    void setObject(RECT rObject, RECT rBound, Point ptFocus, Point ptVelo, 
-                   Point ptAccelerate, Point ptDes, bool bMove);
+    void setObject(RECT object, RECT rBound);
+    void setObject(RECT object, RECT rBound, Point focus, Point velo, 
+                   Point accelerate, Point dest, bool bMove);
 
     // Uniform motion.
     void uniformMove();
@@ -192,11 +192,11 @@ public:
     // Move to destination.
     void moveToDes();
 
-    // Move along path which specified by ptDesPath.
-    // @params: ptDesPath -- Point vector that stores checkpoint of path.
+    // Move along path which specified by destPath.
+    // @params: destPath -- Point vector that stores checkpoint of path.
     //          nPtCount -- Checkpoint counts.
     //          bCycle -- Repeat or not, false by default.
-    void moveAlongPath(Point* ptDesPath, int nPtCount,
+    void moveAlongPath(Point* destPath, int nPtCount,
                        bool bCycle = false);
 
     // Set object move direction.
@@ -212,7 +212,7 @@ public:
     bool checkErr(bool bRectify);
 
     // Set object collision rectangle.
-    void setCheckBox(RECT rObject);
+    void setCheckBox(RECT object);
     // Return object collision rectangle.
     RECT getCheckBox() { return jupiPhyRectCheckBox; }
     

@@ -49,6 +49,7 @@ bool initScene1(HWND hWnd);	// Init scene 1
 bool playScene1(HWND hWnd);	// Play scene 1
 
 JupiterMusic* kMscBGM;			// Background music.
+JupiterMusic* kMscMenu;         // Menu music.
 JupiterMusic* kMscPlaneFly;		// Plane flying music.
 
 JupiterSprite* kSprEnemyLv1[10];	        // Enemy images.
@@ -58,7 +59,7 @@ JupiterPhysics* kPhyEnemyLv1[10];	// Enemy plane physical actions.
 
 
 // Bind sprite and physics
-void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType);
+void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int type);
 
 // Used to make blast effect.
 class JupiterBlast {
@@ -90,6 +91,15 @@ public:
 		jupiBlastFree = false;
 	};
 
+    void set(JupiterSprite* spr, int width, int height, long nDelay)
+    {
+        jupiBlastSprite = spr;
+        jupiBlastEndTime = timeGetTime() + nDelay;
+        jupiBlastSprite->setDrawCxImageInfo(0, 0, width, height);
+        jupiBlastSprite->setVisible(true);
+        jupiBlastFree = false;
+    };
+
 	bool play()	// Play animation.
 	{
         if (!jupiBlastFree && (jupiBlastEndTime <= timeGetTime())) {
@@ -119,6 +129,17 @@ bool kIsShotEnemy;		// Shot enemy;
 bool kShotFighter;		// Crashed by enemy?
 
 int kResult;			// Score.
+bool kScore;    // Display score?
 JupiterSprite* kSprGameOver;	// Game over.
-JupiterBlast kBlastLoadScene;
+
+
+
+JupiterSprite* kSprCredits;
+
+JupiterBlast kLoadSceneAni;
 JupiterSprite* kSprLoadScene;		// Loading scene.
+JupiterSprite* kSprGameMenu;
+int selection; // 1 -- new game, 0 -- credits, -1 -- exit
+
+bool kLoading;  // Loading animation finished?
+bool kScene;

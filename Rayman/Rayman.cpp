@@ -35,7 +35,7 @@ bool gameInitialize(HINSTANCE hInstance)
 
     if(!kAmbiousPtr->createGameWindow()) {
         MessageBox(NULL,"Failed to change display mode!\r\nExit!",
-            "Error", MB_OK | MB_ICONERROR);
+                   "Error", MB_OK | MB_ICONERROR);
         return false;
     }
     return true;
@@ -44,34 +44,65 @@ bool gameInitialize(HINSTANCE hInstance)
 void gameStart(HWND hWnd)
 {
     // Set mouse cursor
-    long lCur = (long)LoadCursor(kAmbiousPtr->getInstance(), MAKEINTRESOURCE(IDC_CURSOR));
+    long lCur = (long)LoadCursor(kAmbiousPtr->getInstance(),
+                                 MAKEINTRESOURCE (IDC_CURSOR));
     SetClassLong(hWnd, GCL_HCURSOR, lCur);
 
-    /*kSprLoadScene = new JupiterSprite("res\\loading.gif");*/
-    kSprLoadScene = new JupiterSprite("res\\loading_2.gif");
-    kSprManage.addSprite(kSprLoadScene, 5);
+    kSprGameMenu = new JupiterSprite("res\\space_menu.png");
+    kSprManage.addSprite(kSprGameMenu, 6);
+    kSprGameMenu->setDrawCxImageInfo(0, 0, 450, 600);
 
-    kSceneNo = 1;	
-    kIsInitScene = false;	
+    kSprGameMenu->setVisible(true);
+
+    kSprCredits = new JupiterSprite("res\\space_credits.png");
+    kSprManage.addSprite(kSprCredits, 6);
+    kSprCredits->setDrawCxImageInfo(0, 0, 450, 600);
+    kSprCredits->setVisible(false);
+
+    kMscMenu = new JupiterMusic("res\\music\\bgm1.mp3");
+    kMscMenu->play(300, true, false);
+
+    kSprLoadScene = new JupiterSprite("res\\loading_2.gif");
+    kSprManage.addSprite(kSprLoadScene, 1);
+
+    kSceneNo = 0;	
+    kIsInitScene = false;
+
+    kScore = false;
+    kScene = false;
 
     initScene1(hWnd);
-    sceneSwitch();
 }
 
 void gameAction(HWND hWnd)
 {
     if(kIsInitScene) {
-        switch(kSceneNo) {
-//             case 0: {
-//                 sceneSwitch();
-//                 break;
-//             }
-            case 1: {
-                playScene1(hWnd);
+        switch (selection) {
+            case 0: {
                 break;
             }
-            case 2: {
+
+            case 1: {
+                switch(kSceneNo) {
+                    case 0: {
+                         sceneSwitch();
+                        break;
+                    }
+                    case 1: {
+                        if (kScene) {
+                            playScene1(hWnd);
+                        }
+                        break;
+                    }
+                    case 2: {
                 
+                    }
+                }
+                break;
+            }
+
+            case -1: {
+                break;
             }
         }
     }
@@ -98,17 +129,8 @@ bool initScene1(HWND hWnd)
     kSprThor = new JupiterSprite();
     kSprThor->setCxImage(kSprThorPic[0]->load());
 
-    // Use DC to create blue background.
-    HDC hDCTmp = GetDC(hWnd);
-    kSprBackGround = new JupiterSprite(hDCTmp, kAmbiousPtr->getWidth(),
-        kAmbiousPtr->getHeight(), RGB(40, 80, 160));
-    ReleaseDC(hWnd, hDCTmp);
-
     kSprBackGroundSpace = new JupiterSprite("res\\space_1.png");
     kSprBackGroundSpace->setDrawCxImageInfo(0, 0, 450, 600);
-
-    kSprBackGround->setDrawInfo(0, 0);
-    kSprManage.addSprite(kSprBackGround, 0);
 
     for (int i = 0; i < 8; i++) {
         kSprManage.addSprite(kSprCloud[i], 1);
@@ -124,9 +146,7 @@ bool initScene1(HWND hWnd)
 
     // Create music object and open it.
     kMscPlaneFly = new JupiterMusic("res\\music\\fly.wav");
-    // kMscBGM = new JupiterMusic("res\\bgm.mp3");
     kMscBGM = new JupiterMusic("res\\music\\bgm4.mp3");
-    kMscBGM->play();
 
     // Enemy plane.
     kSprEnemyLv1[0] = new JupiterSprite("res\\enemy1.png");
@@ -149,36 +169,38 @@ bool initScene1(HWND hWnd)
     }
 
     // Bound plane with physics object.
-    RECT rObject = {200, 400, 300, 500};
+    RECT object = {200, 400, 300, 500};
     RECT rBound = {0, 0, kAmbiousPtr->getWidth(), kAmbiousPtr->getHeight()};
-    Point ptFocus = {0, 0};
-    Point ptVelo = {0, 5};
-    Point ptAccelerate = {0, 0};
-    Point ptDes = {300, 300};
-    kPhyFight = new JupiterPhysics(rObject, rBound, ptFocus, ptVelo,
-        ptAccelerate, ptDes, false);
+    Point focus = {0, 0};
+    Point velo = {0, 5};
+    Point accelerate = {0, 0};
+    Point dest = {300, 300};
+    kPhyFight = new JupiterPhysics(object, rBound, focus, velo,
+        accelerate, dest, false);
 
     kSprThor->setVisible(true);
     kPhyFight->setVisible(true);
 
     // Set bullet physics object.
     kSprShot = new JupiterSprite("res\\Shot.png");
-    RECT rObjectShot = {0, 0, 20, 100};
-    RECT rBoundShot = {0, -100, 400, 600};
-    Point ptFocusShot = {10, 0};
-    Point ptVeloShot = {0, 10};
-    Point ptAccelerateShot = {0, 0};
-    Point ptDesShot = {0, 0};
-    kPhyShot = new JupiterPhysics(rObjectShot, rBoundShot, ptFocusShot,
-        ptVeloShot, ptAccelerateShot, ptDesShot, false);
+    RECT objectShot = {0, 0, 20, 100};
+    RECT boundShot = {0, -100, 400, 600};
+    Point focusShot = {10, 0};
+    Point veloShot = {0, 10};
+    Point accelerateShot = {0, 0};
+    Point desShot = {0, 0};
+    kPhyShot = new JupiterPhysics(objectShot, boundShot, focusShot,
+                                  veloShot, accelerateShot, desShot,
+                                  false);
 
     kPhyShot->setVisible(false);
     kSprManage.addSprite(kSprShot, 4);
 
     for (int i = 0; i < 8; i++) {
         kSprShots[i] = new JupiterSprite("res\\Shot.png");
-        kPhyShots[i] = new JupiterPhysics(rObjectShot, rBoundShot, ptFocusShot,
-            ptVeloShot, ptAccelerateShot, ptDesShot, false);
+        kPhyShots[i] = new JupiterPhysics(objectShot, boundShot, focusShot,
+                                          veloShot, accelerateShot,
+                                          desShot, false);
         kPhyShots[i]->setVisible(false);
         kSprManage.addSprite(kSprShots[i], 4);
     }
@@ -189,10 +211,6 @@ bool initScene1(HWND hWnd)
     kSprManage.addSprite(kSprJupiterBlast, 4);
     kSprManage.addSprite(kSprGameOver, 4);
     kSprManage.addSprite(kSprBackGroundSpace, 0);
-
-    // new added, 1:00
-//     kSprLoadScene = new JupiterSprite("res\\loading.gif");
-//     kSprManage.addSprite(kSprLoadScene, 5);
 
     kSprGameOver->setDrawCxImageInfo(50, 300);
     kSprGameOver->setVisible(false);
@@ -207,13 +225,13 @@ bool initScene1(HWND hWnd)
    return true;
 }
 
-void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
+void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int type)
 {
     srand((unsigned)time(NULL));
     // horizontal position.
     int x = rand() % (kAmbiousPtr->getWidth() - spr->getWidth());
     
-    //Point ptPath[4][8];
+    //Point path[4][8];
     // Plane's generation place. (plane_x, -plane_y)
     // plane_x is a random number between 0 ~ Thor's width - Enemy's width
     // plane_y is negative of plane's height.
@@ -238,7 +256,7 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
     // 400|                  o            | (Ambitious' height = 400)
     //    ---------------------------------
     //       100     200    300    400
-    Point ptPath[8] = {
+    Point path[8] = {
         {x+100, -spr->getHeight()},
         {x+100, 100},
         {x+200, 100},
@@ -249,7 +267,7 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
         {x, kAmbiousPtr->getHeight()}
     };
     
-    Point ptPath_1[8] = {
+    Point path_1[8] = {
         {x+100, -spr->getHeight()},
         {x+100, 100}, 
         {x+100, 100 + rand()%spr->getHeight()}, 
@@ -260,7 +278,7 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
         {x, kAmbiousPtr->getHeight()}
     };
 
-    Point ptPath_2[8] = {
+    Point path_2[8] = {
         {x+100, -spr->getHeight()},
         {x+100, 100},
         {x+200, 100 + rand()%spr->getHeight()},
@@ -271,7 +289,7 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
         {x, kAmbiousPtr->getHeight()}
     };
 
-    Point ptPath_3[8] = {
+    Point path_3[8] = {
         {x+100, -spr->getHeight()},
         {x+150, 100},
         {x+250, 250},
@@ -282,74 +300,63 @@ void setEnemyInfo(JupiterSprite* spr, JupiterPhysics* phy, int nType)
         {x, kAmbiousPtr->getHeight()}
     };
     // If don't move, reset physics.
-        if ((phy->getPathArrive() && nType == 2) || (!phy->getMoveState() && nType == 1)) {
-            RECT rObject = {x, -spr->getHeight(), x+spr->getWidth(), 0};
+        if ((phy->getPathArrive() && type == 2) ||
+            (!phy->getMoveState() && type == 1)) {
+            RECT object = {x, -spr->getHeight(), x+spr->getWidth(), 0};
             RECT rBound = {0, -spr->getHeight(), kAmbiousPtr->getWidth(), 
                 kAmbiousPtr->getHeight() + spr->getHeight()};
-            Point ptFocus = {0, 0};
-            Point ptVelo = {0, rand()%9 + 1};
-            Point ptAccelerate = {0, 0};
-            Point ptDes = {x, kAmbiousPtr->getHeight()};
-            phy->setObject(rObject, rBound, ptFocus, ptVelo, ptAccelerate,
-                ptDes, true);
+            Point focus = {0, 0};
+            Point velo = {0, rand()%9 + 1};
+            Point accelerate = {0, 0};
+            Point dest = {x, kAmbiousPtr->getHeight()};
+            phy->setObject(object, rBound, focus, velo, accelerate,
+                           dest, true);
     }
 
     // Move as type indicated.
-    switch(nType) {
-        case 1:
+    switch (type) {
+        case 1: {
             srand(time(NULL));
             switch((rand()%100)%3) {
                 case 0:
-                    phy->moveAlongPath(ptPath_1, 8);
+                    phy->moveAlongPath(path_1, 8);
                     break;
                 case 1:
                     phy->moveToDes();
                     break;
                 case 2:
-                    phy->moveAlongPath(ptPath_3, 8);
+                    phy->moveAlongPath(path_3, 8);
                     break;
             }
             break;
+        }
 
-        case 2:
-            phy->moveAlongPath(ptPath_2, 8);
+        case 2: {
+            phy->moveAlongPath(path_2, 8);
             break;
+        }
     }
 
     spr->setVisible(phy->getVisible());
 
-    if(spr->getVisible())
+    if (spr->getVisible())
         spr->setDrawCxImageInfo(phy->getLeftTop().x, phy->getLeftTop().y);
 }
 
-
-
 void sceneSwitch()
-{
-    RECT r;
-    r.bottom = 600;
-    r.right = 450;
-    r.top = 0;
-    r.left = 0;
-    /*kBlastLoadScene.set(kSprLoadScene, r, 50);*/
-    int nDelay = 50;
-
-    kBlastLoadScene.jupiBlastSprite = kSprLoadScene;
-    kBlastLoadScene.jupiBlastEndTime = timeGetTime() + 100000;
-    kBlastLoadScene.jupiBlastSprite->setDrawCxImageInfo(0, 0, 450, 600);
-    kBlastLoadScene.jupiBlastSprite->setVisible(true);
-    kBlastLoadScene.jupiBlastFree = false;
-
-    if (!kBlastLoadScene.play()) {
-        kBlastLoadScene.jupiBlastSprite->setVisible(false);
-    }
+{   
+    kLoadSceneAni.set(kSprLoadScene, 450, 600, 1200);
+    //Sleep(3200);
+    kSceneNo = 1;
 }
 
 
 bool playScene1(HWND hWnd)
 {	
-//     kBlastLoadScene->set(kSprLoadScene, r, 3000);
-//     kBlastLoadScene->play();
+    kScore = true;
+    kMscMenu->stop();
+    kMscBGM->play();
+
     for (int i = 0; i < 8; i++) {	// Clouds position and z order.
         // Reach bottom.
         if (kCloudPt[i].y > kAmbiousPtr->getHeight()) {
@@ -376,6 +383,7 @@ bool playScene1(HWND hWnd)
     for (int i = 0; i < 10; i++) {
         setEnemyInfo(kSprEnemyLv1[i], kPhyEnemyLv1[i], i%2+1);
     }
+
     // Enemy crashed with Thor or shotted by bullet.
     RECT r1, r2;
 
@@ -442,8 +450,6 @@ bool playScene1(HWND hWnd)
     if (kShotFighter && !kSprGameOver->getVisible()) {
         kJupiterBlast.set(kSprJupiterBlast, r1, 3000);
         kSprGameOver->setVisible(true);
-        //kSprLoadScene->setVisible(true);
-        //kSprLoadScene->drawCxImage(GetDC(hWnd), 0, 0);
     }
 
     if (!kJupiterBlast.isFree()) {// Blast animation finished.
@@ -469,35 +475,37 @@ bool playScene1(HWND hWnd)
 void gamePaint(HDC hDC)
 {
     if (!kIsInitScene) {
-        //kSprLoadScene->setDrawCxImageInfo(0, 0, 450, 600, 5);
-        kSprLoadScene->drawCxImage(hDC, 0, 0);
-    }
-    else {
+    } else {
         kSprManage.draw(hDC);
     }
-    // Draw point.
-    SetBkMode(hDC, TRANSPARENT);
-    char szResult[20];
-    sprintf(szResult, "Score:%d", kResult);		
 
-    HFONT hFont = CreateFont(40, 40, 0, 0, FW_REGULAR, false, false, false,
-        ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, 
-        FIXED_PITCH | FF_MODERN, "Petala Pro");
-    HFONT hOldFont = (HFONT)SelectObject(hDC, hFont);
-    SetTextColor(hDC, 0x00ee00);
-    TextOut(hDC, 10, 550, szResult, (int)strlen(szResult));
-    SelectObject(hDC, hOldFont);
-    DeleteObject(hFont);
+    if (kScore) {
+        // Draw point.
+        SetBkMode(hDC, TRANSPARENT);
+        char szResult[20];
+        sprintf(szResult, "Score:%d", kResult);
+    
+        HFONT hFont = CreateFont(40, 40, 0, 0, FW_REGULAR, false, false, false,
+                                 ANSI_CHARSET, OUT_DEFAULT_PRECIS,
+                                 CLIP_DEFAULT_PRECIS, PROOF_QUALITY,
+                                 FIXED_PITCH | FF_MODERN, "Petala Pro");
+
+        HFONT hOldFont = (HFONT)SelectObject(hDC, hFont);
+        SetTextColor(hDC, 0x00ee00);
+        TextOut(hDC, 10, 550, szResult, (int)strlen(szResult));
+        SelectObject(hDC, hOldFont);
+        DeleteObject(hFont);
+    }
 }
 
 void gameEnd()
 {
     delete kMscBGM;
+    delete kMscMenu;
     delete kMscPlaneFly;
     delete[] (*kPhyEnemyLv1); 
     delete kPhyFight;
     kSprManage.release(true);
-    delete kSprLoadScene;
     delete kAmbiousPtr;
 }
 
@@ -513,8 +521,8 @@ void gamePause(HWND hWnd)
 
 bool gameWindowClose(HWND hWnd)
 {
-    if (MessageBox(kAmbiousPtr->getWindow(), "Are you sure to quit? T_T", "Quit",
-        MB_YESNO | MB_DEFBUTTON2 | MB_ICONASTERISK) == IDYES)
+    if (MessageBox(kAmbiousPtr->getWindow(), "Are you sure to quit? T_T",
+                   "Quit", MB_YESNO | MB_DEFBUTTON2 | MB_ICONASTERISK) == IDYES)
         return true;
     else
         return false;
@@ -522,66 +530,105 @@ bool gameWindowClose(HWND hWnd)
 
 void keyEvent(HWND hWnd)
 {
-    if (GetAsyncKeyState(VK_UP) < 0) {  // Press up?
-        kPhyFight->moveDirect(DI_UP);	// Move up.
-        kPhyFight->checkErr(true);
-        kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
-                                     kPhyFight->getLeftTop().y, 100, 100);
-        kSprThor->setCxImage(kSprThorPic[0]->load());
-        kMscPlaneFly->play(300, false, false);
-    } else if (GetAsyncKeyState(VK_DOWN) < 0) {
-        kPhyFight->moveDirect(DI_DOWN);	
-        kPhyFight->checkErr(true);		
+    if (kSceneNo == 1) {
+        if (GetAsyncKeyState(VK_UP) < 0) {  // Press up?
+            kPhyFight->moveDirect(DI_UP);	// Move up.
+            kPhyFight->checkErr(true);
+            kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
+                kPhyFight->getLeftTop().y, 100, 100);
+            kSprThor->setCxImage(kSprThorPic[0]->load());
+            kMscPlaneFly->play(300, false, false);
+        } else if (GetAsyncKeyState(VK_DOWN) < 0) {
+            kPhyFight->moveDirect(DI_DOWN);	
+            kPhyFight->checkErr(true);		
 
-        kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
-                                     kPhyFight->getLeftTop().y, 100, 100);
-        kSprThor->setCxImage(kSprThorPic[0]->load());
-    } else if (GetAsyncKeyState(VK_LEFT) < 0) {
-        kPhyFight->moveDirect(DI_LEFT);
-        kPhyFight->checkErr(true);	
-        kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x + 10,
-                                     kPhyFight->getLeftTop().y, 80, 100);
-        kSprThor->setCxImage(kSprThorPic[1]->load());
-        kMscPlaneFly->play(300, false, false);
-    } else if (GetAsyncKeyState(VK_RIGHT) < 0) {
-        kPhyFight->moveDirect(DI_RIGHT);
-        kPhyFight->checkErr(true);	
-        kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x + 10,
-                                     kPhyFight->getLeftTop().y, 80, 100);
-        kSprThor->setCxImage(kSprThorPic[2]->load());
-        kMscPlaneFly->play(300, false, false);	// Play fly music.
-    } else if (GetAsyncKeyState(VK_PRIOR) < 0) {	// PageUp, volume up.
-        kMscBGM->volumeUp();
-    } else if (GetAsyncKeyState(VK_NEXT) < 0) {	// PageDown, volume down.
-        kMscBGM->volumeDown();
-    } else if (GetAsyncKeyState(VK_HOME ) < 0) {	// Home, replay.
-        kMscBGM->play(300, true);
-    } else if (GetAsyncKeyState(VK_END ) < 0) {	// End, stop music.
-        kMscBGM->stop();
-    } else if (GetAsyncKeyState(VK_ESCAPE) < 0) {	// Pressed ESCAPE?
-        SendMessage(hWnd, WM_CLOSE, 0, 0);
-    } else {			// No key is pressed.
-        kSprThor->setCxImage(kSprThorPic[0]->load());
-        kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
-            kPhyFight->getLeftTop().y, 100, 100);
-    }
+            kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
+                kPhyFight->getLeftTop().y, 100, 100);
+            kSprThor->setCxImage(kSprThorPic[0]->load());
+        } else if (GetAsyncKeyState(VK_LEFT) < 0) {
+            kPhyFight->moveDirect(DI_LEFT);
+            kPhyFight->checkErr(true);	
+            kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x + 10,
+                kPhyFight->getLeftTop().y, 80, 100);
+            kSprThor->setCxImage(kSprThorPic[1]->load());
+            kMscPlaneFly->play(300, false, false);
+        } else if (GetAsyncKeyState(VK_RIGHT) < 0) {
+            kPhyFight->moveDirect(DI_RIGHT);
+            kPhyFight->checkErr(true);	
+            kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x + 10,
+                kPhyFight->getLeftTop().y, 80, 100);
+            kSprThor->setCxImage(kSprThorPic[2]->load());
+            kMscPlaneFly->play(300, false, false);	// Play fly music.
+        } else if (GetAsyncKeyState(VK_PRIOR) < 0) {	// PageUp, volume up.
+            kMscBGM->volumeUp();
+        } else if (GetAsyncKeyState(VK_NEXT) < 0) {	// PageDown, volume down.
+            kMscBGM->volumeDown();
+        } else if (GetAsyncKeyState(VK_HOME ) < 0) {	// Home, replay.
+            kMscBGM->play(300, true);
+        } else if (GetAsyncKeyState(VK_END ) < 0) {	// End, stop music.
+            kMscBGM->stop();
+        } else if (GetAsyncKeyState(VK_ESCAPE) < 0) {	// Pressed ESCAPE?
+            SendMessage(hWnd, WM_CLOSE, 0, 0);
+        } else {			// No key is pressed.
+            kSprThor->setCxImage(kSprThorPic[0]->load());
+            kSprThor->setDrawCxImageInfo(kPhyFight->getLeftTop().x, 
+                kPhyFight->getLeftTop().y, 100, 100);
+        }
 
-    if (GetAsyncKeyState('S') < 0) {// S pressed? if no bullet in scene, beam bullet.
-        if (!kPhyShot->getMoveState() && kSprThor->getVisible()) {
-            Point pt = {(kPhyFight->getPos().x + kPhyFight->getWidth() / 2), 
-                (kPhyFight->getPos().y)};
-            kPhyShot->setPos(pt);
-            kPhyShot->setDes(pt.x, -100);
-            kPhyShot->setMoveState(true);
-            kPhyShot->setVisible(true);
-            kSprShot->setVisible(true);
-        }   
+        if (GetAsyncKeyState('S') < 0) {// S pressed? if no bullet in scene, beam bullet.
+            if (!kPhyShot->getMoveState() && kSprThor->getVisible()) {
+                Point pt = {
+                    (kPhyFight->getPos().x + kPhyFight->getWidth() / 2), 
+                    (kPhyFight->getPos().y)
+                };
+
+                kPhyShot->setPos(pt);
+                kPhyShot->setDes(pt.x, -100);
+                kPhyShot->setMoveState(true);
+                kPhyShot->setVisible(true);
+                kSprShot->setVisible(true);
+            }   
+        }
     }
 }
 
 void mouseLButtonDown(HWND hWnd, int x, int y, WPARAM wParam)
 {
+    if (x >= 50) {
+        if (x <= 215) {    // New Game
+            if ((y >= 50) && (y <= 75)) {
+                selection = 1;
+                kSprGameMenu->setVisible(false);
+                /*sceneSwitch();*/
+                kScene = true;
+            }
+        }
 
+        if (x <= 110) {    // Exit
+            if ((y >= 100) && (y <= 125)) {
+                selection = -1;
+                if (gameWindowClose(hWnd)) {
+                    DestroyWindow(hWnd);
+                }
+            }
+        }
+
+        if (x <= 150) {    // Credits
+            if ((y >= 150) && (y <= 175)){
+                selection = 0;
+                kSprCredits->setVisible(true);
+            }
+        }
+
+        if (x >= 400) {    // Back
+            if (x <= 450) {
+                if (y >= 550 && y <= 600) {
+                    kSprCredits->setVisible(false);
+                    kSprGameMenu->setVisible(true);
+                }
+            }
+        }
+    } 
 }
 
 void mouseLButtonUp(HWND hWnd, int x, int y, WPARAM wParam)
@@ -603,3 +650,4 @@ void mouseMove(HWND hWnd, int x, int y, WPARAM wParam)
 {
 
 }
+
