@@ -599,7 +599,6 @@ void mouseLButtonDown(HWND hWnd, int x, int y, WPARAM wParam)
             if ((y >= 50) && (y <= 75)) {
                 selection = 1;
                 kSprGameMenu->setVisible(false);
-                /*sceneSwitch();*/
                 kScene = true;
             }
         }
@@ -650,4 +649,3 @@ void mouseMove(HWND hWnd, int x, int y, WPARAM wParam)
 {
 
 }
-

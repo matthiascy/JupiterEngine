@@ -37,15 +37,15 @@ public:
     static Jupiter * getJupiter() { return ptrJupiter; };
     HINSTANCE getInstance() { return jupiInst; };
     HWND getWindow() { return jupiWnd; };
-    void setWindow(HWND hWnd) { jupiWnd=hWnd; };
+    void setWindow(HWND hWnd) { jupiWnd = hWnd; };
     bool getPause() { return jupiPause; };
-    void setPause(bool bPause) { jupiPause=bPause; };
+    void setPause(bool bPause) { jupiPause = bPause; };
     int	getFrameDelay() { return jupiFrameDelay; };
-    void setFrameDelay(int nFrameDelay) { jupiFrameDelay=nFrameDelay; };
+    void setFrameDelay(int nFrameDelay) { jupiFrameDelay = nFrameDelay; };
     int	getWidth() { return jupiWndWidth; };
     int	getHeight() { return jupiWndHeight; };
     long getStartTime() { return jupiStartTime; }
-    void setNextGameTick(int nNextGameTick) { jupiNextTick=nNextGameTick; }
+    void setNextGameTick(int nNextGameTick) { jupiNextTick = nNextGameTick; }
     int getNextGameTick() { return jupiNextTick; }
 
 protected:

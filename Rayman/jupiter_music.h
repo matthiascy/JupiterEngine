@@ -54,6 +54,8 @@ public:
     bool close();
     // Stop playing music.
     bool stop();
+    // Pause
+    bool pause();
 
     // Play a music.
     // @params: nVolume -- music volume, 300 by default.

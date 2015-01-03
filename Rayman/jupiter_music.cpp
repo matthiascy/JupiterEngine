@@ -51,12 +51,12 @@ JupiterMusic::~JupiterMusic()
 bool JupiterMusic::getPlayState()
 {	
     char szStatus[20] = {'\0'};
-    char szCommand[50];
+    char command[50];
     
     // Create MCI command 
-    sprintf(szCommand, "status MUSIC%d mode", jupiMscID);
+    sprintf(command, "status MUSIC%d mode", jupiMscID);
     // Get state
-    mciSendString(szCommand, szStatus, 20, 0);
+    mciSendString(command, szStatus, 20, 0);
     // Status is 'playing'
     if (strcmp(szStatus, "playing") == 0)
         return true;
@@ -67,10 +67,10 @@ bool JupiterMusic::getPlayState()
 bool JupiterMusic::getOpenState()
 {
     char szStatus[20] = {'\0'};
-    char szCommand[50];
+    char command[50];
 
-    sprintf(szCommand, "status MUSIC%d mode", jupiMscID);	
-    mciSendString(szCommand, szStatus, 20, 0);
+    sprintf(command, "status MUSIC%d mode", jupiMscID);	
+    mciSendString(command, szStatus, 20, 0);
     // No matter the music is been playing or stopped, it's already open.
     if (strcmp(szStatus,"stopped") == 0 || strcmp(szStatus,"playing") == 0)
         return true;
@@ -81,10 +81,10 @@ bool JupiterMusic::getOpenState()
 bool JupiterMusic::getStopState()
 {
     char szStatus[20] = {'\0'};
-    char szCommand[50];
+    char command[50];
 
-    sprintf(szCommand, "status MUSIC%d mode", jupiMscID);	
-    mciSendString(szCommand, szStatus, 20, 0);
+    sprintf(command, "status MUSIC%d mode", jupiMscID);	
+    mciSendString(command, szStatus, 20, 0);
     if (strcmp(szStatus,"stopped") == 0)
         return true;
     else
@@ -103,10 +103,10 @@ void JupiterMusic::setVolume(int nVolume)
     if(nVolume > 1000)
         nVolume = 1000;
 
-    char szCommand[50];
+    char command[50];
     // Create MCI command.
-    sprintf(szCommand, "set audio MUSIC%d volume to %d", jupiMscID, nVolume);
-    mciSendString(szCommand, NULL, 0, 0); // Set volume.
+    sprintf(command, "set audio MUSIC%d volume to %d", jupiMscID, nVolume);
+    mciSendString(command, NULL, 0, 0); // Set volume.
 
     jupiMscVolume = nVolume;
 }
@@ -130,9 +130,9 @@ bool JupiterMusic::open(LPTSTR szMusicPath)
     if (getPlayState() || getStopState()) // If there is a music file open,
         close();                         // close it.
 
-    char szCommand[50];
-    sprintf(szCommand, "open %s ALIAS MUSIC%d", szMusicPath, jupiMscID);
-    if (!mciSendString(szCommand, NULL, 0, 0)) { // Open music file.
+    char command[50];
+    sprintf(command, "open %s ALIAS MUSIC%d", szMusicPath, jupiMscID);
+    if (!mciSendString(command, NULL, 0, 0)) { // Open music file.
         return true;
     }
     return false;
@@ -140,11 +140,11 @@ bool JupiterMusic::open(LPTSTR szMusicPath)
 
 bool JupiterMusic::close()
 {
-    char szCommand[50];
+    char command[50];
 
     if (getOpenState()) {
-        sprintf(szCommand,"close MUSIC%d", jupiMscID);
-        if (!mciSendString(szCommand, NULL, 0, 0)) {
+        sprintf(command,"close MUSIC%d", jupiMscID);
+        if (!mciSendString(command, NULL, 0, 0)) {
             return true;				
         }
     }
@@ -154,15 +154,15 @@ bool JupiterMusic::close()
 bool JupiterMusic::play(int nVolume/* = 300*/, bool bRepeat/* = false*/,
                         bool bReStart/* = false*/)
 {
-    char szCommand[50];	
+    char command[50];	
     // Only when music is stop or request restart
     if (getStopState() || bReStart) {
         if (bRepeat)
-            sprintf(szCommand, "play MUSIC%d FROM 0  repeat", jupiMscID);
+            sprintf(command, "play MUSIC%d FROM 0  repeat", jupiMscID);
         else
-            sprintf(szCommand, "play MUSIC%d FROM 0", jupiMscID);
+            sprintf(command, "play MUSIC%d FROM 0", jupiMscID);
 
-        if (!mciSendString(szCommand, NULL, 0, 0)) {
+        if (!mciSendString(command, NULL, 0, 0)) {
             setVolume(nVolume);				
             return true;
         }
@@ -173,12 +173,24 @@ bool JupiterMusic::play(int nVolume/* = 300*/, bool bRepeat/* = false*/,
 
 bool JupiterMusic::stop()
 {
-    char szCommand[50];
+    char command[50];
     if (getPlayState()) {
-        sprintf(szCommand, "stop MUSIC%d", jupiMscID);
-        if (!mciSendString(szCommand, NULL, 0, 0)) {
+        sprintf(command, "stop MUSIC%d", jupiMscID);
+        if (!mciSendString(command, NULL, 0, 0)) {
             return true;
         }
     }		
     return false;
 }	
+
+bool JupiterMusic::pause()
+{
+    char command[50];
+    if (getPlayState()) {
+        sprintf(command, "pause MUSIC%d", jupiMscID);
+        if (!mciSendString(command, NULL, 0, 0)) {
+            return true;
+        }
+    }
+    return false;
+}
