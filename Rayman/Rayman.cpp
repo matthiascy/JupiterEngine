@@ -48,13 +48,13 @@ void gameStart(HWND hWnd)
                                  MAKEINTRESOURCE (IDC_CURSOR));
     SetClassLong(hWnd, GCL_HCURSOR, lCur);
 
-    kSprGameMenu = new JupiterSprite("res\\space_menu.png");
+    kSprGameMenu = new JupiterSprite("res\\Menu.png");
     kSprManage.addSprite(kSprGameMenu, 6);
     kSprGameMenu->setDrawCxImageInfo(0, 0, 450, 600);
 
     kSprGameMenu->setVisible(true);
 
-    kSprCredits = new JupiterSprite("res\\space_credits.png");
+    kSprCredits = new JupiterSprite("res\\Credits.png");
     kSprManage.addSprite(kSprCredits, 6);
     kSprCredits->setDrawCxImageInfo(0, 0, 450, 600);
     kSprCredits->setVisible(false);
@@ -85,7 +85,8 @@ void gameAction(HWND hWnd)
             case 1: {
                 switch(kSceneNo) {
                     case 0: {
-                         sceneSwitch();
+                         //sceneSwitch();
+						kSceneNo = 1;
                         break;
                     }
                     case 1: {
@@ -594,40 +595,37 @@ void keyEvent(HWND hWnd)
 
 void mouseLButtonDown(HWND hWnd, int x, int y, WPARAM wParam)
 {
-    if (x >= 50) {
-        if (x <= 215) {    // New Game
-            if ((y >= 50) && (y <= 75)) {
-                selection = 1;
-                kSprGameMenu->setVisible(false);
-                kScene = true;
-            }
-        }
+	if (x >= 120 && x <= 350) {
+		// New Game
+		if ((y >= 240) && (y <= 300)) {
+			selection = 1;
+			kSprGameMenu->setVisible(false);
+			kScene = true;
+		}
 
-        if (x <= 110) {    // Exit
-            if ((y >= 100) && (y <= 125)) {
-                selection = -1;
-                if (gameWindowClose(hWnd)) {
-                    DestroyWindow(hWnd);
-                }
-            }
-        }
+		// Exit
+		if ((y >= 360) && (y <= 420)) {
+			selection = -1;
+			if (gameWindowClose(hWnd)) {
+				DestroyWindow(hWnd);
+			}
+		}
 
-        if (x <= 150) {    // Credits
-            if ((y >= 150) && (y <= 175)){
-                selection = 0;
-                kSprCredits->setVisible(true);
-            }
-        }
+		// Credits
+		if ((y >= 300) && (y <= 360)){
+			selection = 0;
+			kSprCredits->setVisible(true);
+		}
+	}
 
-        if (x >= 400) {    // Back
-            if (x <= 450) {
-                if (y >= 550 && y <= 600) {
-                    kSprCredits->setVisible(false);
-                    kSprGameMenu->setVisible(true);
-                }
-            }
-        }
-    } 
+	if (x >= 380) {    // Back
+		if (x <= 430) {
+			if (y >= 490 && y <= 600) {
+				kSprCredits->setVisible(false);
+				kSprGameMenu->setVisible(true);
+			}
+		}
+	} 
 }
 
 void mouseLButtonUp(HWND hWnd, int x, int y, WPARAM wParam)
